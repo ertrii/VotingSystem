@@ -1,5 +1,11 @@
 <?php
 
+//Session, testing
+session_start();
+
+$_SESSION['user'] = 'erick';
+
+
 //Config DataBase
 
 //HOST

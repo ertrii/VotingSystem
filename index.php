@@ -18,7 +18,13 @@ include_once('vote.php');
     </form>
     <br>
     <form action="post">
-        <input type="text" name="char" placeholder="Character">
+        
+        <select name="char">
+            <option value='Char1'>Char 1</option>
+            <option value='Char2'>Char 2</option>
+            <option value='Char3'>Char 3</option>
+        </select>
+        
         <input type="submit" value="Done">
     </form>
 </body>
