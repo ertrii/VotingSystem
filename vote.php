@@ -7,14 +7,14 @@ class Vote extends DataBase
 {
 
     private $form_Vote ='
-        <form action="post">
+        <form method="post">
             <input type="text" name="user" id="" placeholder="User">
-            <input type="submit" value="Vote">
+            <input type="submit" value="Vote" name="vote">
         </form>
         ';
 
     private $form_Config = '
-        <form action="post">
+        <form method="post>
             
             <select name="char">
                 <option value="Char1">Char 1</option>
@@ -24,7 +24,7 @@ class Vote extends DataBase
             
             <input type="submit" value="Done">
         </form>
-    ';
+        ';
 
     public function getForm_Vote(){
 
@@ -36,8 +36,30 @@ class Vote extends DataBase
 
         if (!VOTING_SYSTEM) return null;
 
+        //if there is a session, return form_Config
         return (isset($_SESSION['user'])) ? $this->form_Config : null;                   
         
     }
     
+
+    public $info = '';
+    
+    public function start($user){
+
+        if ($user == ''){
+            $this -> info = '<p id="error"> Please, write your user name </p>';
+            return;
+        }
+        //test
+        $this -> info = '<p id="success"> vote </p>';
+    }
+
+    public function defaultChar($char){
+        if ($char == '') {
+            $this -> info = '<p id="error"> Please, select you character </p>';
+            return;
+        }
+        //test
+        $this -> info = '<p id="success"> done </p>';
+    }
 }

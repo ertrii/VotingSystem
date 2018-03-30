@@ -1,5 +1,10 @@
 <?php
+
 include_once('vote.php');
+
+$vote = new Vote();
+
+if(isset($_POST['vote'])) $vote->start($_POST['user']);
 
 ?>
 
@@ -12,16 +17,11 @@ include_once('vote.php');
     <title>Voting System</title>
 </head>
 <body>
-    
-    <?php
+    <!-- Print form_Vote -->
+    <?= $vote -> getForm_Vote()?>
 
-    $vote = new Vote();
-    // Print form_Vote
-    echo $vote -> getForm_Vote();
-    
-    ?>
-    
     <br>
+    <?= $vote -> info?>
     <!--  if there is a session, print form_Config  -->
     <?= $vote -> getForm_Config()?>
 
