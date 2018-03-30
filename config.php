@@ -1,9 +1,9 @@
 <?php
 
 //Session, testing
-session_start();
+//session_start();
 
-$_SESSION['user'] = 'erick';
+//$_SESSION['user'] = 'erick';
 
 
 //Config DataBase
@@ -34,7 +34,7 @@ if(VOTING_SYSTEM){
     $info = 'try the new voting system';
 }else{
     //Vote off
-    $info = 'voting system in maintenance';
+    $info = 'voting system in maintenance...';
 }
 
 define('VOTE_INFO', $info);

@@ -12,20 +12,19 @@ include_once('vote.php');
     <title>Voting System</title>
 </head>
 <body>
-    <form action="post">
-        <input type="text" name="user" id="" placeholder="User">
-        <input type="submit" value="Vote">
-    </form>
+    
+    <?php
+
+    $vote = new Vote();
+    // Print form_Vote
+    echo $vote -> getForm_Vote();
+    
+    ?>
+    
     <br>
-    <form action="post">
-        
-        <select name="char">
-            <option value='Char1'>Char 1</option>
-            <option value='Char2'>Char 2</option>
-            <option value='Char3'>Char 3</option>
-        </select>
-        
-        <input type="submit" value="Done">
-    </form>
+    <!--  if there is a session, print form_Config  -->
+    <?= $vote -> getForm_Config()?>
+
 </body>
+
 </html>
