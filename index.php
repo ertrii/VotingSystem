@@ -21,7 +21,7 @@ if(isset($_POST['vote'])) $vote->start($_POST['user']);
     <?= $vote -> getForm_Vote()?>
 
     <br>
-    <?= $vote -> info?>
+    <?= $vote -> info['template']?>
     <!--  if there is a session, print form_Config  -->
     <?= $vote -> getForm_Config()?>
 

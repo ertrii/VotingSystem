@@ -31,9 +31,10 @@ class Vote extends DataBase
         }
     }
 
+    private $_reward;
 
     //Reward after the vote
-    public function reward(){
+    private function reward(){
 
         $this->process();
 
@@ -46,7 +47,7 @@ class Vote extends DataBase
             'status' => $this->status
         );
 
-        return $_reward;
+        $this->$_reward = $_reward;
 
     }
 
@@ -87,27 +88,33 @@ class Vote extends DataBase
     }    
 
     
-    public $info = ''; //info about vote
+    public $info = array('text' => '', 'template' => '', 'status' => 0); //info about vote
+
+    private function prepareInfo($text, $status = 0){
+        $this -> info['text'] = $text;
+        $this -> info['template'] = '<p id="error">' . $text . '</p>';
+        $this -> info['status'] = $status;    //0 = False / 1 = true
+    }
     
     //Start Vote
     public function start($user){
-        
-        if ($user == ''){
-            $this -> info = '<p id="error"> Please, write your user name </p>';
+                
+        if ($user == ''){            
+            $this->prepareInfo('Please, write your user name');
             return;
         }
         $this->vote++;
         //test        
-        $this -> info = '<p id="success"> vote </p>';
+        $this->prepareInfo('info', 1);
     }
 
     //Config default Character
     public function defaultChar($char){
         if ($char == '') {
-            $this -> info = '<p id="error"> Please, select you character </p>';
+            $this->prepareInfo('Please, select you character');
             return;
         }
         //test
-        $this -> info = '<p id="success"> done </p>';
+        $this->prepareInfo('done', 1);
     }
 }
