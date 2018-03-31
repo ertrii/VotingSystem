@@ -9,7 +9,7 @@ class Vote extends DataBase
     private $status = true;
     private $prize1 = array('status' => true, 'id' => 1565189, 'img' => 'gacha.jpg', 'count' => 1);
     private $prize2 = array('status' => false, 'id' => 1234567, 'img' => 'medall.jpg', 'count' => 1);
-    private $additionalPrize = array('status', false, 'id' => 01561, 'img' => 'additionalPrize.png', 'count' => 1);
+    private $additionalPrize = array('status' => false, 'id' => 01561, 'img' => 'additionalPrize.png', 'count' => 1);
 
     //Voting System
     private function process(){
@@ -30,8 +30,10 @@ class Vote extends DataBase
             $this->prize1['count'] = rand(0, 1);
         }
     }
+    //info about vote
+    public $info = array('text' => '', 'template' => '', 'reward' => null, 'status' => 0);
 
-    private $_reward;
+    //private $_reward = array();
 
     //Reward after the vote
     private function reward(){
@@ -47,11 +49,13 @@ class Vote extends DataBase
             'status' => $this->status
         );
 
-        $this->$_reward = $_reward;
+        //$this->_reward = $_reward;
+        $this -> info['template'] .= '<p> Your character got ' . $this -> prize1['count'] .' gachapom</p>';
+        $this -> info['reward'] = $_reward;
 
     }
 
-    /** Template HTML <from>  */
+    /** Template HTML <form>  */
     private $form_Vote ='
         <form method="post">
             <input type="text" name="user" id="" placeholder="User">
@@ -86,13 +90,16 @@ class Vote extends DataBase
         return (isset($_SESSION['user'])) ? $this->form_Config : null;                   
         
     }    
-
     
-    public $info = array('text' => '', 'template' => '', 'status' => 0); //info about vote
 
     private function prepareInfo($text, $status = 0){
         $this -> info['text'] = $text;
-        $this -> info['template'] = '<p id="error">' . $text . '</p>';
+        
+        if($status === 1){
+            $this -> info['template'] = '<p id="error">' . $text . '</p>';                    
+        } 
+        $this -> info['template'] = '<p id="success"> '. $text . '</p>';
+        
         $this -> info['status'] = $status;    //0 = False / 1 = true
     }
     
@@ -105,7 +112,8 @@ class Vote extends DataBase
         }
         $this->vote++;
         //test        
-        $this->prepareInfo('info', 1);
+        $this->prepareInfo('Voted...', 1);
+        $this -> reward();
     }
 
     //Config default Character
