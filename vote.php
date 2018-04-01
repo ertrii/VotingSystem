@@ -50,7 +50,7 @@ class Vote extends DataBase
         );
 
         //$this->_reward = $_reward;
-        $this -> info['template'] .= '<p> Your character got ' . $this -> prize1['count'] .' gachapom</p>';
+        $this -> info['template'] .= '<p> Your character got ' . $this -> prize1['count'] .' gachapom, <strong>Vote : '. $this-> vote . '</strong></p>';
         $this -> info['reward'] = $_reward;
 
     }
@@ -111,7 +111,8 @@ class Vote extends DataBase
             return;
         }
         $this->vote++;
-        //test        
+        //test
+        $this->vote = parent::vote($user);
         $this->prepareInfo('Voted...', 1);
         $this -> reward();
     }

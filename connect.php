@@ -20,8 +20,8 @@ class DataBase{
     }
 
     //=== Table Vote ===    
-    protected function select($user){
-        $select = $this -> connect("SELECT votes FROM voted WHERE user = '$user' ");
+    protected function select($user, $row){
+        $select = $this -> connect("SELECT $row FROM voted WHERE user = '$user' ");
         $_v = $select->fetch_array();
         return $_v['votes'];
     }
@@ -32,10 +32,11 @@ class DataBase{
         return ($insert) ? true : false;
     }
 
-    protected function update($user){
-        $update = $this -> connect("UPDATE vote SET votes = votes + 1  WHERE id = '$user'");
-        return ($update) ? true : false;
+    protected function vote($user){
+        $update = $this -> connect("UPDATE voted SET votes = votes + 1  WHERE user = '$user'");
+        return ($update) ? $this -> select($user, 'votes') : false;
     }
+    
     //=== Table Maple ===
     /*
     protected function consult(){
