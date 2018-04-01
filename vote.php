@@ -63,8 +63,10 @@ class Vote extends DataBase
         </form>
         ';
 
-    private $form_Config = '
-        <form method="post>            
+    private function formConfig(){
+
+        $form_Config = '
+        <form method="post">            
             <select name="char">
                 <option value="Char1">Char 1</option>
                 <option value="Char2">Char 2</option>
@@ -74,6 +76,8 @@ class Vote extends DataBase
         </form>
         ';
 
+        return $form_Config;
+    }
     
     //Get form templates
     public function getForm_Vote(){
@@ -87,7 +91,7 @@ class Vote extends DataBase
         if (!VOTING_SYSTEM) return null;
 
         //if there is a session, return form_Config
-        return (isset($_SESSION['user'])) ? $this->form_Config : null;                   
+        return (isset($_SESSION['user'])) ? $this->formConfig() : null;                   
         
     }    
     
@@ -111,8 +115,9 @@ class Vote extends DataBase
             return;
         }
         $this->vote++;
-        //test
-        $this->vote = parent::vote($user);
+
+        
+        $this->vote = parent::vote($user); //Database Consult and save
         $this->prepareInfo('Voted...', 1);
         $this -> reward();
     }
@@ -124,6 +129,8 @@ class Vote extends DataBase
             return;
         }
         //test
+        
+        echo parent::defaultChar($char);
         $this->prepareInfo('done', 1);
     }
 }

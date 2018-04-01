@@ -32,6 +32,12 @@ class DataBase{
         return ($insert) ? true : false;
     }
 
+    protected function defaultChar($char){        
+        $user = $_SESSION['user'];        
+        $update = $this-> connect("UPDATE voted SET default_character = '$char', last_vote = last_vote WHERE user = '$user' " );
+        return ($update) ? true : false;
+    }
+
     protected function vote($user){
         $update = $this -> connect("UPDATE voted SET votes = votes + 1  WHERE user = '$user'");
         return ($update) ? $this -> select($user, 'votes') : false;

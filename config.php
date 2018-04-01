@@ -1,9 +1,9 @@
 <?php
 
 //Session, testing
-//session_start();
+session_start();
 
-//$_SESSION['user'] = 'erick';
+$_SESSION['user'] = 'erick';
 
 
 //Config DataBase
