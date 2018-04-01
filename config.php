@@ -11,16 +11,17 @@
 //HOST
 define('HOST', 'localhost');
 
+//USER DATABASE
+define('DB_USER', 'root');
+define('DB_PASS', '');
+
+
+
 //DATABASE VOTE
-define('DB_VOTE', 'vote');
-define('VOTE_USER', 'root');
-define('VOTE_PASS', '');
-
-
+define('DB_VOTE', 'vote'); 
 //DATABASE MAPLEROYALS
 define('DB_ROYALS', 'mapleRoyals');  //Example
-define('ROYALS_USER', 'root');
-define('ROYALS_PASS', '');
+
 
 
 //System Vote
