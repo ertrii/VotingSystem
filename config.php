@@ -3,7 +3,7 @@
 //Session, testing
 session_start();
 
-$_SESSION['id'] = '2';
+$_SESSION['id'] = '1';
 
 
 //Config DataBase
@@ -22,7 +22,7 @@ define('DB_VOTE', 'vote');
 //DATABASE MAPLEROYALS
 define('DB_ROYALS', 'maple_maplelife');  //Example
 
-
+define('MIN_LV_REQUERID', 15);
 
 //System Vote
 define('VOTE_LINK', 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1');

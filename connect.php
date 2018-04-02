@@ -30,7 +30,7 @@ class DataBase{
     protected function getCharsUser($_id = null){
         $id = ($_id === null) ? $_SESSION['id'] : $_id;
         
-        $get = $this -> connectRoyals("SELECT name FROM characters WHERE accountid = '$id'");
+        $get = $this -> connectRoyals("SELECT name, level FROM characters WHERE accountid = '$id'");
         $chars = $get-> fetch_all();
         
         if($get){
@@ -77,23 +77,35 @@ class DataBase{
     protected function vote($user){        
         $id = $this -> consultIdUser($user);        //Verify if user exists in Royals's database (accounts table)
         if (!$id) return false;
-        
+
+        $chars = $this -> getCharsUser($id);
         //Verificar si existe el usuario en la table vote sino agregarlo consiguiendo los datos de la tabla de maple        
         $userExistsInVote = $this -> connect("SELECT IF (EXISTS (SELECT id_user FROM voted WHERE id_user = $id), 1, 0)");
 
         if (!$userExistsInVote -> fetch_array()[0]){
-
-            $chars = $this -> getCharsUser($id);
+            
             if(!$chars){                
                 return false;
             }else{
+                
                 $this->insert($id, $chars[0][0]);   //First Character for Default
             }
+            
 
         }
-            
-        $update = $this -> connect("UPDATE voted SET votes = votes + 1  WHERE id_user = $id");        
+        $lowLv = false;
 
+        foreach ($chars as $char) {
+            if(MIN_LV_REQUERID <= intval($char[1])){                
+                $lowLv = true;
+                break;
+            }
+        }
+
+        if(!$lowLv) return false;        
+
+        $update = $this -> connect("UPDATE voted SET votes = votes + 1  WHERE id_user = $id");
+                
         return ($update) ? $this -> select($id, 'votes') : false;
     }
     
