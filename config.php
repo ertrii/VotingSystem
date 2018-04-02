@@ -3,7 +3,7 @@
 //Session, testing
 session_start();
 
-$_SESSION['user'] = 'erick';
+$_SESSION['id'] = '2';
 
 
 //Config DataBase
@@ -20,7 +20,7 @@ define('DB_PASS', '');
 //DATABASE VOTE
 define('DB_VOTE', 'vote'); 
 //DATABASE MAPLEROYALS
-define('DB_ROYALS', 'mapleRoyals');  //Example
+define('DB_ROYALS', 'maple_maplelife');  //Example
 
 
 

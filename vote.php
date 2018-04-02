@@ -5,6 +5,22 @@ include_once('connect.php');
 
 class Vote extends DataBase
 {
+    private $chars = array();
+    function __construct(){        
+        
+        if (isset($_SESSION['id'])){
+            $_chars =  parent::getCharsUser();
+            if (!$_chars){
+                $this -> chars = null;
+                return;
+            }
+            foreach ($_chars as $char) {
+                array_push($this -> chars, $char[0]);
+            }
+        }
+        
+
+    }
     private $vote = 0;
     private $status = true;
     private $prize1 = array('status' => true, 'id' => 1565189, 'img' => 'gacha.jpg', 'count' => 1);
@@ -64,14 +80,20 @@ class Vote extends DataBase
         ';
 
     private function formConfig(){
+        
+        if ($this -> chars === null)
+            return '<p id="error">Please create your first character firts</p>';
+            //return null;
+        
+
+        $_chars = '';
+        foreach ($this -> chars as $c) {
+            $_chars .= '<option value=" ' . $c . '">' . $c . '</option>';
+        }
 
         $form_Config = '
         <form method="post">            
-            <select name="char">
-                <option value="Char1">Char 1</option>
-                <option value="Char2">Char 2</option>
-                <option value="Char3">Char 3</option>
-            </select>            
+            <select name="char">'. $_chars .'</select>
             <input type="submit" value="Done">
         </form>
         ';
@@ -91,7 +113,7 @@ class Vote extends DataBase
         if (!VOTING_SYSTEM) return null;
 
         //if there is a session, return form_Config
-        return (isset($_SESSION['user'])) ? $this->formConfig() : null;                   
+        return (isset($_SESSION['id'])) ? $this->formConfig() : null;                   
         
     }    
     
@@ -113,13 +135,19 @@ class Vote extends DataBase
         if ($user == ''){            
             $this->prepareInfo('Please, write your user name');
             return;
-        }
-        $this->vote++;
+        }        
 
         
         $this->vote = parent::vote($user); //Database Consult and save
-        $this->prepareInfo('Voted...', 1);
-        $this -> reward();
+
+        if (!$this -> vote) {
+            $this->prepareInfo('You dont have a character', 0);
+        }else{            
+            $this->prepareInfo('Voted...', 1);
+            $this -> reward();
+        }
+        
+        
     }
 
     //Config default Character
@@ -130,7 +158,7 @@ class Vote extends DataBase
         }
         //test
         
-        echo parent::defaultChar($char);
+        parent::defaultChar($char);
         $this->prepareInfo('done', 1);
     }
 }
