@@ -141,7 +141,7 @@ class Vote extends DataBase
         $this->vote = parent::vote($user); //Database Consult and save
 
         if (!$this -> vote) {
-            $this->prepareInfo('You dont have a character', 0);
+            $this->prepareInfo($this->db_info, 0);
         }else{            
             $this->prepareInfo('Voted...', 1);
             $this -> reward();

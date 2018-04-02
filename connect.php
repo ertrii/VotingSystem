@@ -53,7 +53,9 @@ class DataBase{
 			return $dB->query($query);
 			
 		}
-    }    
+    }
+
+    protected $db_info = '';
 
     //=== Table Vote ===    
     protected function select($id, $row){
@@ -76,7 +78,10 @@ class DataBase{
 
     protected function vote($user){        
         $id = $this -> consultIdUser($user);        //Verify if user exists in Royals's database (accounts table)
-        if (!$id) return false;
+        if (!$id){
+            $this -> db_info = 'This user does not exists';
+            return false;
+        }
 
         $chars = $this -> getCharsUser($id);
         //Verificar si existe el usuario en la table vote sino agregarlo consiguiendo los datos de la tabla de maple        
@@ -84,7 +89,8 @@ class DataBase{
 
         if (!$userExistsInVote -> fetch_array()[0]){
             
-            if(!$chars){                
+            if(!$chars){
+                $this-> db_info = 'You dont have a character';
                 return false;
             }else{
                 
@@ -102,7 +108,10 @@ class DataBase{
             }
         }
 
-        if(!$lowLv) return false;        
+        if(!$lowLv){
+            $this -> db_info = 'you need a character as a minimum level 15';
+            return false;
+        }
 
         $update = $this -> connect("UPDATE voted SET votes = votes + 1  WHERE id_user = $id");
                 
