@@ -100,23 +100,7 @@ class Vote extends DataBase
 
         return $form_Config;
     }
-    
-    //Get form templates
-    public function getForm_Vote(){
-
-        return (VOTING_SYSTEM) ? $this->form_Vote : VOTE_INFO;
-        
-    }
-
-    public function getForm_Config(){
-
-        if (!VOTING_SYSTEM) return null;
-
-        //if there is a session, return form_Config
-        return (isset($_SESSION['id'])) ? $this->formConfig() : null;                   
-        
-    }    
-    
+       
 
     private function prepareInfo($text, $status = 0){
         $this -> info['text'] = $text;
@@ -126,11 +110,11 @@ class Vote extends DataBase
         } 
         $this -> info['template'] = '<p id="success"> '. $text . '</p>';
         
-        $this -> info['status'] = $status;    //0 = False / 1 = true
+        $this -> info['status'] = $status;          // 0 = False / 1 = true
     }
     
     //Start Vote
-    public function start($user){
+    private function start($user){
                 
         if ($user == ''){            
             $this->prepareInfo('Please, write your user name');
@@ -138,27 +122,54 @@ class Vote extends DataBase
         }        
 
         
-        $this->vote = parent::vote($user); //Database Consult and save
+        $this->vote = parent::vote($user);          //Database Consult and save
 
         if (!$this -> vote) {
+            
             $this->prepareInfo($this->db_info, 0);
         }else{            
             $this->prepareInfo('Voted...', 1);
-            $this -> reward();
+            $this -> reward();                      //Reward
         }
         
         
     }
 
     //Config default Character
-    public function defaultChar($char){
+    private function configDefaultChar($char){
         if ($char == '') {
             $this->prepareInfo('Please, select you character');
             return;
-        }
-        //test
+        }        
         
         parent::defaultChar($char);
         $this->prepareInfo('done', 1);
+    }
+
+
+    //Get form templates
+    public function getForm_Vote(){
+                
+        if (VOTING_SYSTEM) {
+            if(isset($_POST['vote'])) $this -> start($_POST['user']);
+            return $this->form_Vote;
+        }else{
+            return VOTE_INFO;
+        }
+        
+    }
+
+    public function getForm_Config(){
+
+        if (!VOTING_SYSTEM) return null;
+        
+        //if there is a session, return form_Config
+        if (isset($_SESSION['id'])) {
+            if(isset($_POST['char'])) $this -> configDefaultChar($_POST['char']);
+            return $this->formConfig();
+        } else{
+            return null;
+        }
+        
     }
 }

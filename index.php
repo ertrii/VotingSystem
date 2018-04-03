@@ -4,10 +4,6 @@ include_once('vote.php');
 
 $vote = new Vote();
 
-if(isset($_POST['vote'])) $vote->start($_POST['user']);
-
-if(isset($_POST['char'])) $vote -> defaultChar($_POST['char']);
-
 ?>
 
 <!DOCTYPE html>
