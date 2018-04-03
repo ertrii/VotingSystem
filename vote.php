@@ -66,8 +66,10 @@ class Vote extends DataBase
         );
 
         //$this->_reward = $_reward;
-        $this -> info['template'] .= '<p> Your character got ' . $this -> prize1['count'] .' gachapom, <strong>Vote : '. $this-> vote . '</strong></p>';
+        
         $this -> info['reward'] = $_reward;
+
+        return 'Your character got ' . $this -> prize1['count'] .' gachapom, <strong>Vote : '. $this-> vote . '</strong>';
 
     }
 
@@ -124,14 +126,11 @@ class Vote extends DataBase
         
         $this->vote = parent::vote($user);          //Database Consult and save
 
-        if (!$this -> vote) {
-            
+        if (!$this -> vote) {            
             $this->prepareInfo($this->db_info, 0);
         }else{            
-            $this->prepareInfo('Voted...', 1);
-            $this -> reward();                      //Reward
-        }
-        
+            $this->prepareInfo($this -> reward(), 1);
+        }        
         
     }
 
