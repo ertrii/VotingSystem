@@ -2,7 +2,7 @@
 
 //Voting System
 include_once('connect.php');
-
+include_once('rewards.php');
 class Vote extends DataBase
 {
     private $chars = array();
@@ -24,11 +24,16 @@ class Vote extends DataBase
     private $vote = 0;
     private $status = true;
     private $prize1 = array('status' => true, 'id' => 1565189, 'img' => 'gacha.jpg', 'count' => 1);
-    private $prize2 = array('status' => false, 'id' => 1234567, 'img' => 'medall.jpg', 'count' => 1);
-    private $additionalPrize = array('status' => false, 'id' => 01561, 'img' => 'additionalPrize.png', 'count' => 1);
+    private $rewards = array('prize1' => false, 'prize2' => false, 'additional_prize' => false);
 
     //Voting System
     private function process(){
+
+        if(Items::PRIZE_1['status']) $rewards['prize1'] = Items::PRIZE_1;
+        if(Items::PRIZE_2['status']) $rewards['prize2'] = Items::PRIZE_2;
+        if(Items::ADDITIONAL_PRIZE['status']) $rewards['additional_prize'] = Items::ADDITIONAL_PRIZE;
+        
+
         $_v = $this->vote;
         if($_v >= 1000){
             $this->prize1['count'] = rand(5, 10);
@@ -45,21 +50,21 @@ class Vote extends DataBase
         }else{
             $this->prize1['count'] = rand(0, 1);
         }
+        
     }
     //info about vote
     public $info = array('text' => '', 'template' => '', 'reward' => null, 'status' => 0);
 
-    //private $_reward = array();
-
     //Reward after the vote
     private function reward(){
+
 
         $this->process();
 
         $_reward = array(
             'prize1' => ($this->prize1['status'] ? $this->prize1 : false),
-            'prize2' => ($this->prize2['status'] ? $this->prize2 : false),
-            'additionalPrize' => ($this->additionalPrize['status'] ? $this->additionalPrize : false),
+            'prize2' => (Items::PRIZE_2['status'] ? Items::PRIZE_2['item'] : false),
+            'additionalPrize' => (Items::ADDITIONAL_PRIZE['status'] ? Items::ADDITIONAL_PRIZE['item'] : false),
             'allVotes' => $this->vote,
             'nextVote' => 'time',
             'status' => $this->status
@@ -128,7 +133,8 @@ class Vote extends DataBase
 
         if (!$this -> vote) {            
             $this->prepareInfo($this->db_info, 0);
-        }else{            
+        }else{
+            //prepare info and get text reward
             $this->prepareInfo($this -> reward(), 1);
         }        
         

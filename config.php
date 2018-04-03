@@ -15,8 +15,6 @@ define('HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
-
-
 //DATABASE VOTE
 define('DB_VOTE', 'vote'); 
 //DATABASE MAPLEROYALS
@@ -24,6 +22,53 @@ define('DB_ROYALS', 'maple_maplelife');  //Example
 
 define('MIN_LV_REQUERID', 15);
 
+
+class Items{
+
+    public const PRIZE_1  = array(
+        'status'        =>      true,
+        'count'         =>      'random',
+        'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
+        'item'          =>      array(
+    
+            'id'            =>      84565465,
+            'name'          =>      'gachapom',
+            'img'           =>      'gacha.png'
+    
+        )
+            
+    );
+
+    public const PRIZE_2 = array(
+        'status'        =>      false,
+        'count'         =>      1,
+        'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
+        'item'          =>      array(
+    
+            'id'            =>      123456789,
+            'name'          =>      'medall',
+            'img'           =>      'medall.jpg'
+    
+        )
+    
+    );
+
+    public const ADDITIONAL_PRIZE = array(
+        'status'        =>      false,
+        'count'         =>      2,
+        'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
+        'item'          =>      array(
+    
+            'id'            =>      15510987,
+            'name'          =>      'weapom',
+            'img'           =>      'img.jpg'
+    
+        )
+    
+    );
+    
+
+}
 //System Vote
 define('VOTE_LINK', 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1');
 define('VOTING_SYSTEM', true);    // on / off
