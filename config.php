@@ -27,8 +27,8 @@ class Items{
 
     public const PRIZE_1  = array(
         'status'        =>      true,
-        'count'         =>      'random',
-        'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
+        'count'         =>      [1, 5],
+        'voteRequerid'  =>      [1, 10, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
             'id'            =>      84565465,
@@ -40,9 +40,9 @@ class Items{
     );
 
     public const PRIZE_2 = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'count'         =>      1,
-        'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
+        'voteRequerid'  =>      [12, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
             'id'            =>      123456789,
@@ -54,7 +54,7 @@ class Items{
     );
 
     public const ADDITIONAL_PRIZE = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'count'         =>      2,
         'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
         'item'          =>      array(

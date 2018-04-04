@@ -19,8 +19,8 @@ class Vote extends DataBase
             }
         }
         
-
     }
+    
     private $vote = 0;
     private $status = true;
     private $prize1 = array('status' => true, 'id' => 1565189, 'img' => 'gacha.jpg', 'count' => 1);
