@@ -1,10 +1,10 @@
 <?php
 
 //Session, testing
-//session_start();
+session_start();
 
-//$_SESSION['id'] = '2';
-
+$_SESSION['id'] = '2';
+define('VOTING_SYSTEM', true);    // on / off
 
 //Config DataBase
 
@@ -27,8 +27,14 @@ class Items{
 
     public const PRIZE_1  = array(
         'status'        =>      true,
-        'count'         =>      [1, 5],
+        'type'          =>      'continuous',
+        'count'         =>      [
+            array('min' => 0, 'max' => 1),
+            array('min' => 1, 'max' => 1),
+            array('min' => 1, 'max' => 3)
+        ],
         'voteRequerid'  =>      [1, 10, 50, 100, 250, 500, 1000],
+        
         'item'          =>      array(
     
             'id'            =>      84565465,
@@ -40,8 +46,9 @@ class Items{
     );
 
     public const PRIZE_2 = array(
-        'status'        =>      true,
+        'status'        =>      false,
         'count'         =>      1,
+        'type'          =>      'requerid',
         'voteRequerid'  =>      [12, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
@@ -56,6 +63,7 @@ class Items{
     public const ADDITIONAL_PRIZE = array(
         'status'        =>      true,
         'count'         =>      2,
+        'type'          =>      'requerid',
         'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
@@ -71,7 +79,6 @@ class Items{
 }
 //System Vote
 define('VOTE_LINK', 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1');
-define('VOTING_SYSTEM', true);    // on / off
 
 if(VOTING_SYSTEM){
 //information for user:
