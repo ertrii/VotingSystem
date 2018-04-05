@@ -117,6 +117,5 @@ class DataBase{
                 
         return ($update) ? $this -> select($id, 'votes') : false;
     }
-    
-    
+        
 }

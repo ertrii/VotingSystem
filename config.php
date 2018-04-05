@@ -3,7 +3,7 @@
 //Session, testing
 session_start();
 
-$_SESSION['id'] = '2';
+$_SESSION['id'] = '1';
 define('VOTING_SYSTEM', true);    // on / off
 
 //Config DataBase
@@ -21,12 +21,13 @@ define('DB_VOTE', 'vote');
 define('DB_ROYALS', 'maple_maplelife');  //Example
 
 define('MIN_LV_REQUERID', 15);
+const ADDITIONAL_VOTE = false;
 
 
 class Items{
 
     public const PRIZE_1  = array(
-        'status'        =>      true,
+        'status'        =>      false,
         'type'          =>      'continuous',
         'count'         =>      [
             array('min' => 0, 'max' => 1),

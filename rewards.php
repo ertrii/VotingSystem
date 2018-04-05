@@ -107,8 +107,3 @@ class Reward {
         return $this->rewards;
     }
 }
-
-
-$r = new Reward(501, 50);
-
-print_r($r->get());

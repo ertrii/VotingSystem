@@ -22,59 +22,30 @@ class Vote extends DataBase
     }
     
     private $vote = 0;
-    private $status = true;
-    private $prize1 = array('status' => true, 'id' => 1565189, 'img' => 'gacha.jpg', 'count' => 1);
-    private $rewards = array('prize1' => false, 'prize2' => false, 'additional_prize' => false);
-
-    //Voting System
-    private function process(){
-
-        if(Items::PRIZE_1['status']) $rewards['prize1'] = Items::PRIZE_1;
-        if(Items::PRIZE_2['status']) $rewards['prize2'] = Items::PRIZE_2;
-        if(Items::ADDITIONAL_PRIZE['status']) $rewards['additional_prize'] = Items::ADDITIONAL_PRIZE;
-        
-
-        $_v = $this->vote;
-        if($_v >= 1000){
-            $this->prize1['count'] = rand(5, 10);
-        }elseif($_v >= 500){
-            $this->prize1['count'] = rand(3, 7);
-        }elseif($_v >= 250){
-            $this->prize1['count'] = rand(2, 5);
-        }elseif($_v >= 100){
-            $this->prize1['count'] = rand(1, 3);
-        }elseif($_v >= 50){
-            $this->prize1['count'] = rand(1, 2);
-        }elseif($_v >= 10){
-            $this->prize1['count'] = rand(1, 1);
-        }else{
-            $this->prize1['count'] = rand(0, 1);
-        }
-        
-    }
+    private $status = true;    
+    
     //info about vote
     public $info = array('text' => '', 'template' => '', 'reward' => null, 'status' => 0);
 
     //Reward after the vote
-    private function reward(){
+    private function reward(){        
 
-
-        $this->process();
-
-        $_reward = array(
-            'prize1' => ($this->prize1['status'] ? $this->prize1 : false),
-            'prize2' => (Items::PRIZE_2['status'] ? Items::PRIZE_2['item'] : false),
-            'additionalPrize' => (Items::ADDITIONAL_PRIZE['status'] ? Items::ADDITIONAL_PRIZE['item'] : false),
-            'allVotes' => $this->vote,
-            'nextVote' => 'time',
-            'status' => $this->status
-        );
-
-        //$this->_reward = $_reward;
-        
+        $r = new Reward($this->vote, 51);
+        $_reward = $r->get();
         $this -> info['reward'] = $_reward;
 
-        return 'Your character got ' . $this -> prize1['count'] .' gachapom, <strong>Vote : '. $this-> vote . '</strong>';
+        $p = 'Thank you for the Vote. You Total Votes: ' . $this->vote;
+
+        if(count($_reward) === 0){
+            $p .= '<br>Sorry you did not win, try it on the next vote:';
+        }else{
+            $p .= '<br>You got:';
+        }
+        foreach ($_reward as $prize) {
+            $p .= '<br>* ' . $prize['count'] . " " .$prize['item']['name'];
+        }
+
+        return $p;
 
     }
 
@@ -110,14 +81,14 @@ class Vote extends DataBase
        
 
     private function prepareInfo($text, $status = 0){
-        $this -> info['text'] = $text;
+        $this -> info['text'] = $text;        
         
-        if($status === 1){
-            $this -> info['template'] = '<p id="error">' . $text . '</p>';                    
+        if($status !== 1){
+            $this -> info['template'] = '<p id="error">' . $text . '</p>';            
         } 
         $this -> info['template'] = '<p id="success"> '. $text . '</p>';
         
-        $this -> info['status'] = $status;          // 0 = False / 1 = true
+        $this -> info['status'] = $status;          // 0 = False / 1 = true        
     }
     
     //Start Vote
@@ -148,24 +119,23 @@ class Vote extends DataBase
         }        
         
         parent::defaultChar($char);
-        $this->prepareInfo('done', 1);
+
+        $this->prepareInfo('done', 1);        
     }
 
 
+
     //Get form templates
-    public function getForm_Vote(){
-                
+    public function getForm_Vote(){                
         if (VOTING_SYSTEM) {
             if(isset($_POST['vote'])) $this -> start($_POST['user']);
             return $this->form_Vote;
         }else{
             return VOTE_INFO;
-        }
-        
+        }        
     }
 
     public function getForm_Config(){
-
         if (!VOTING_SYSTEM) return null;
         
         //if there is a session, return form_Config
@@ -174,7 +144,6 @@ class Vote extends DataBase
             return $this->formConfig();
         } else{
             return null;
-        }
-        
+        }        
     }
 }
