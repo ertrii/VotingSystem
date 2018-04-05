@@ -3,11 +3,12 @@
 class Reward {
     
     private $vote;
+    private $additionalVote = false;
 
-    function __construct($_vote){
+    function __construct($_vote, $_additionalVote = false){
         
         $this-> vote = intval($_vote);
-        
+        if($_additionalVote) $this-> additionalVote = intval($_additionalVote);
     }
 
     private $rewards = array();
@@ -75,6 +76,19 @@ class Reward {
                         }
                         break;
 
+                    case 'accumulate':
+                    case 'a':
+                        if(!$this->additionalVote){
+                            $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error: The additional vote is needed', 'img' => 'error.png'), 'count' => null) ;
+                            break 2;
+                        }
+                        
+                        if($this->additionalVote === $prize['voteRequerid'][$i]){
+                            $this->rewards[] = $this->countItem($prize, $i);
+                            break 2;
+                        }
+                        break;
+                        
                     default:
                         $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error type', 'img' => 'error.png'), 'count' => null) ;
                         break 2;
@@ -95,6 +109,6 @@ class Reward {
 }
 
 
-$r = new Reward(500);
+$r = new Reward(501, 50);
 
 print_r($r->get());

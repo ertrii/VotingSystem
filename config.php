@@ -63,7 +63,7 @@ class Items{
     public const ADDITIONAL_PRIZE = array(
         'status'        =>      true,
         'count'         =>      2,
-        'type'          =>      'requerid',
+        'type'          =>      'accumulate',
         'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
