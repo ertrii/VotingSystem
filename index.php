@@ -19,11 +19,11 @@ $vote = new Vote();
     <?= $vote -> getForm_Vote()?>
 
     <br>
-    <?= $vote -> info['template'] ?>
+    <?= $vote -> info['formVote']['template'] ?>
     <!--  if there is a session, print form_Config  -->
     
     <?= $vote -> getForm_Config()?>
-    <?= $vote -> info['template'] ?>
+    <?= $vote -> info['formConfig']['template'] ?>
 
 </body>
 

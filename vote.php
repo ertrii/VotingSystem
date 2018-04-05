@@ -25,7 +25,10 @@ class Vote extends DataBase
     private $status = true;    
     
     //info about vote
-    public $info = array('text' => '', 'template' => '', 'reward' => null, 'status' => 0);
+    public $info = array(
+        'formVote' => array('text' => '', 'template' => '', 'status' => 0),
+        'formConfig' => array('text' => '', 'template' => '', 'status' => 0),
+        'reward' => null);
 
     //Reward after the vote
     private function reward(){        
@@ -37,7 +40,7 @@ class Vote extends DataBase
         $p = 'Thank you for the Vote. You Total Votes: ' . $this->vote;
 
         if(count($_reward) === 0){
-            $p .= '<br>Sorry you did not win, try it on the next vote:';
+            return $p .= '<br>Sorry you did not win, try it on the next vote:';
         }else{
             $p .= '<br>You got:';
         }
@@ -70,6 +73,7 @@ class Vote extends DataBase
         }
 
         $form_Config = '
+        <p>Default Character: '. parent::select($_SESSION['id'], 'default_character') .'</p>
         <form method="post">            
             <select name="char">'. $_chars .'</select>
             <input type="submit" value="Done">
@@ -81,14 +85,21 @@ class Vote extends DataBase
        
 
     private function prepareInfo($text, $status = 0){
-        $this -> info['text'] = $text;        
+        $post = '';
+        if(isset($_POST['vote'])){
+            $post = 'formVote';
+        }
+        if(isset($_POST['char'])){
+            $post = 'formConfig';
+        }
+        $this -> info[$post]['text'] = $text;        
         
         if($status !== 1){
-            $this -> info['template'] = '<p id="error">' . $text . '</p>';            
+            $this -> info[$post]['template'] = '<p id="error">' . $text . '</p>';            
         } 
-        $this -> info['template'] = '<p id="success"> '. $text . '</p>';
+        $this -> info[$post]['template'] = '<p id="success"> '. $text . '</p>';
         
-        $this -> info['status'] = $status;          // 0 = False / 1 = true        
+        $this -> info[$post]['status'] = $status;          // 0 = False / 1 = true        
     }
     
     //Start Vote

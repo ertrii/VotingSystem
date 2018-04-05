@@ -27,7 +27,7 @@ const ADDITIONAL_VOTE = false;
 class Items{
 
     public const PRIZE_1  = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'type'          =>      'continuous',
         'count'         =>      [
             array('min' => 0, 'max' => 1),
