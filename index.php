@@ -1,9 +1,6 @@
 <?php
-
 include_once('vote.php');
-
 $vote = new Vote();
-
 ?>
 
 <!DOCTYPE html>
@@ -16,15 +13,10 @@ $vote = new Vote();
 </head>
 <body>
     <!-- Print form_Vote -->
-    <?= $vote -> getForm_Vote()?>
-
-    <br>
+    <?= $vote -> getForm_Vote()?>    
     <?= $vote -> info['formVote']['template'] ?>
-    <!--  if there is a session, print form_Config  -->
-    
+    <!--  if there is a session, print form_Config  -->    
     <?= $vote -> getForm_Config()?>
     <?= $vote -> info['formConfig']['template'] ?>
-
 </body>
-
 </html>

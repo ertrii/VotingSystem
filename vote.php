@@ -15,14 +15,13 @@ class Vote extends DataBase
                 return;
             }
             foreach ($_chars as $char) {
-                array_push($this -> chars, $char[0]);
+                array_push($this -> chars, $char[1]);
             }
         }
         
     }
     
     private $vote = 0;
-    private $status = true;    
     
     //info about vote
     public $info = array(
@@ -69,11 +68,15 @@ class Vote extends DataBase
 
         $_chars = '';
         foreach ($this -> chars as $c) {
-            $_chars .= '<option value=" ' . $c . '">' . $c . '</option>';
+            $_chars .= '<option value="' . $c . '">' . $c . '</option>';
         }
+        
+        $nameChar = parent::getNameChar(parent::select($_SESSION['id'], 'default_id_character'));
+
+        if($nameChar == '') $nameChar = 'error e1002';  //means that the name was not obtained.
 
         $form_Config = '
-        <p>Default Character: '. parent::select($_SESSION['id'], 'default_character') .'</p>
+        <p>Default Character: '. $nameChar .'</p>
         <form method="post">            
             <select name="char">'. $_chars .'</select>
             <input type="submit" value="Done">

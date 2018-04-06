@@ -3,7 +3,7 @@
 //Session, testing
 session_start();
 
-$_SESSION['id'] = '1';
+$_SESSION['id'] = '2';
 define('VOTING_SYSTEM', true);    // on / off
 
 //Config DataBase

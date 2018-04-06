@@ -30,7 +30,7 @@ class DataBase{
     protected function getCharsUser($_id = null){
         $id = ($_id === null) ? $_SESSION['id'] : $_id;
         
-        $get = $this -> connectRoyals("SELECT name, level FROM characters WHERE accountid = '$id'");
+        $get = $this -> connectRoyals("SELECT id, name, level FROM characters WHERE accountid = '$id'");
         $chars = $get-> fetch_all();
         
         if($get){
@@ -40,6 +40,10 @@ class DataBase{
         }
     }
 
+    protected function getNameChar($id){
+        $name = $this->connectRoyals("SELECT name FROM characters WHERE id = $id");
+        return $name -> fetch_array()['name'];
+    }
 
     // === Database Vote ===
     protected function connect($query){
@@ -66,13 +70,25 @@ class DataBase{
     
 
     protected function insert($id, $char){
-        $insert = $this -> connect("INSERT INTO voted(id_user, default_character) VALUES ('$id', '$char')");
+        $insert = $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ('$id', '$char')");
         return ($insert) ? true : false;
     }
 
     protected function defaultChar($char){        
-        $id = $_SESSION['id'];        
-        $update = $this-> connect("UPDATE voted SET default_character = '$char', last_vote = last_vote WHERE id_user = '$id' " );
+        $id = $_SESSION['id'];
+        $_chars = $this->getCharsUser($id);
+
+        //if there is an insertion of -1, it is because there was a manipulation in the configuration form
+        $id_char = -1;
+        
+        foreach ($_chars as $_char) {                        
+            
+            if($_char[1] == $char){
+                $id_char = $_char[0]; //getting id satisfactorily
+                break;
+            }
+        }
+        $update = $this-> connect("UPDATE voted SET default_id_character = '$id_char', last_vote = last_vote WHERE id_user = '$id' " );
         return ($update) ? true : false;
     }
 
@@ -94,7 +110,7 @@ class DataBase{
                 return false;
             }else{
                 
-                $this->insert($id, $chars[0][0]);   //First Character for Default
+                $this->insert($id, $chars[1][0]);   //First Character for Default
             }
             
 
@@ -102,7 +118,7 @@ class DataBase{
         $lowLv = false;
 
         foreach ($chars as $char) {
-            if(MIN_LV_REQUERID <= intval($char[1])){                
+            if(MIN_LV_REQUERID <= intval($char[2])){                
                 $lowLv = true;
                 break;
             }
