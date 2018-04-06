@@ -26,7 +26,7 @@ const ADDITIONAL_VOTE = false;
 
 class Items{
 
-    public const PRIZE_1  = array(
+    private const PRIZE_1  = array(
         'status'        =>      true,
         'type'          =>      'continuous',
         'count'         =>      [
@@ -46,7 +46,7 @@ class Items{
             
     );
 
-    public const PRIZE_2 = array(
+    private const PRIZE_2 = array(
         'status'        =>      false,
         'count'         =>      1,
         'type'          =>      'requerid',
@@ -61,7 +61,7 @@ class Items{
     
     );
 
-    public const ADDITIONAL_PRIZE = array(
+    private const ADDITIONAL_PRIZE = array(
         'status'        =>      true,
         'count'         =>      2,
         'type'          =>      'accumulate',
@@ -75,9 +75,14 @@ class Items{
         )
     
     );
+
+    public static function get(){
+        return [self::PRIZE_1, self::PRIZE_2, self::ADDITIONAL_PRIZE];
+    }
     
 
 }
+
 //System Vote
 define('VOTE_LINK', 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1');
 

@@ -49,12 +49,8 @@ class Reward {
     }
 
     private function process(){
-        
-        $_rewards = array();
-        
-        array_push($_rewards, Items::PRIZE_1, Items::PRIZE_2, Items::ADDITIONAL_PRIZE);
-        
-        foreach ($_rewards as $prize) {
+                        
+        foreach (Items::get() as $prize) {
             if(!$prize['status']) continue;
             
             $_countItemTemporal;
