@@ -4,6 +4,9 @@
 session_start();
 
 $_SESSION['id'] = '2';
+
+const WEB_DOMAIN = 'localhost';
+
 define('VOTING_SYSTEM', true);    // on / off
 
 //Config DataBase
@@ -22,6 +25,7 @@ define('DB_ROYALS', 'maple_maplelife');  //Example
 
 define('MIN_LV_REQUERID', 15);
 const ADDITIONAL_VOTE = false;
+
 
 
 class Items{
@@ -47,7 +51,7 @@ class Items{
     );
 
     private const PRIZE_2 = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'count'         =>      1,
         'type'          =>      'requerid',
         'voteRequerid'  =>      [12, 50, 100, 250, 500, 1000],
@@ -80,7 +84,6 @@ class Items{
         return [self::PRIZE_1, self::PRIZE_2, self::ADDITIONAL_PRIZE];
     }
     
-
 }
 
 //System Vote

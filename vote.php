@@ -36,18 +36,24 @@ class Vote extends DataBase
         $_reward = $r->get();
         $this -> info['reward'] = $_reward;
 
-        $p = 'Thank you for the Vote. You Total Votes: ' . $this->vote;
+        $div = 'Thank you for the Vote. You Total Votes: <br>' . $this->vote;
 
         if(count($_reward) === 0){
-            return $p .= '<br>Sorry you did not win, try it on the next vote:';
+            return $div .= 'Sorry you did not win, try it on the next vote:';
         }else{
-            $p .= '<br>You got:';
-        }
-        foreach ($_reward as $prize) {
-            $p .= '<br>* ' . $prize['count'] . " " .$prize['item']['name'];
-        }
+            //Link: hidden
+            $div .= '<a id="link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>
+            <br>You got:<ul>';
 
-        return $p;
+            foreach ($_reward as $prize) {
+                $div .= '<li> ' . $prize['count'] . " " . $prize['item']['name'] . '</li>';
+            }
+
+            $div .= '</ul>';
+        }
+        
+
+        return $div .= 'You will be directed to gtop100 in <span id="count_time">5</span> seconds <script src="script.js"></script>';
 
     }
 
@@ -98,9 +104,9 @@ class Vote extends DataBase
         $this -> info[$post]['text'] = $text;        
         
         if($status !== 1){
-            $this -> info[$post]['template'] = '<p id="error">' . $text . '</p>';            
+            $this -> info[$post]['template'] = '<div id="error">' . $text . '</div>';
         } 
-        $this -> info[$post]['template'] = '<p id="success"> '. $text . '</p>';
+        $this -> info[$post]['template'] = '<div id="success"> '. $text . '</div>';
         
         $this -> info[$post]['status'] = $status;          // 0 = False / 1 = true        
     }
