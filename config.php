@@ -3,29 +3,30 @@
 //Session, testing
 session_start();
 
-$_SESSION['id'] = '2';
-
-const WEB_DOMAIN = 'localhost';
-
-define('VOTING_SYSTEM', true);    // on / off
+$_SESSION['id'] = '1';
 
 //Config DataBase
 
+const VOTING_SYSTEM = true;    // on / off
 //HOST
-define('HOST', 'localhost');
+const HOST = 'localhost';
 
 //USER DATABASE
-define('DB_USER', 'root');
-define('DB_PASS', '');
+const DB_USER = 'root';
+const DB_PASS = '';
 
 //DATABASE VOTE
-define('DB_VOTE', 'vote'); 
-//DATABASE MAPLEROYALS
-define('DB_ROYALS', 'maple_maplelife');  //Example
+const DB_VOTE = 'vote';
+//DATABASE MAPLE
+const DB_ROYALS = 'maple_maplelife';  //Example
 
-define('MIN_LV_REQUERID', 15);
-const ADDITIONAL_VOTE = false;
+const MIN_LV_REQUERID = 15;
+const ADDITIONAL_VOTE = true;
 
+//System Vote
+const VOTE_LINK = 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
+
+const VOTE_INFO = (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
 
 
 class Items{
@@ -33,7 +34,7 @@ class Items{
     private const PRIZE_1  = array(
         'status'        =>      true,
         'type'          =>      'continuous',
-        'count'         =>      [
+        'quantity'         =>      [
             array('min' => 0, 'max' => 1),
             array('min' => 1, 'max' => 1),
             array('min' => 1, 'max' => 3)
@@ -52,9 +53,9 @@ class Items{
 
     private const PRIZE_2 = array(
         'status'        =>      true,
-        'count'         =>      1,
-        'type'          =>      'requerid',
-        'voteRequerid'  =>      [12, 50, 100, 250, 500, 1000],
+        'quantity'         =>      1,
+        'type'          =>      'c',
+        'voteRequerid'  =>      [12, 50, 100, 198, 500, 1000],
         'item'          =>      array(
     
             'id'            =>      123456789,
@@ -67,7 +68,7 @@ class Items{
 
     private const ADDITIONAL_PRIZE = array(
         'status'        =>      true,
-        'count'         =>      2,
+        'quantity'         =>      2,
         'type'          =>      'accumulate',
         'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
         'item'          =>      array(
@@ -85,18 +86,3 @@ class Items{
     }
     
 }
-
-//System Vote
-define('VOTE_LINK', 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1');
-
-if(VOTING_SYSTEM){
-//information for user:
-
-    //Vote on
-    $info = 'try the new voting system';
-}else{
-    //Vote off
-    $info = 'voting system in maintenance...';
-}
-
-define('VOTE_INFO', $info);

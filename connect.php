@@ -8,7 +8,7 @@ class DataBase{
     
     //=== Database Maple ===
     
-    protected function connectRoyals($query){
+    protected function connectMaple($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_ROYALS);
 
 		if ($dB->connect_errno) {
@@ -22,7 +22,7 @@ class DataBase{
 
     }
     protected function consultIdUser($user){
-        $consult = $this -> connectRoyals("SELECT id FROM accounts WHERE name = '$user'");
+        $consult = $this -> connectMaple("SELECT id FROM accounts WHERE name = '$user'");
         $id = $consult-> fetch_array();
         return ($consult) ? $id['id'] : false;
     }
@@ -30,7 +30,7 @@ class DataBase{
     protected function getCharsUser($_id = null){
         $id = ($_id === null) ? $_SESSION['id'] : $_id;
         
-        $get = $this -> connectRoyals("SELECT id, name, level FROM characters WHERE accountid = '$id'");
+        $get = $this -> connectMaple("SELECT id, name, level FROM characters WHERE accountid = '$id'");
         $chars = $get-> fetch_all();
         
         if($get){
@@ -41,11 +41,14 @@ class DataBase{
     }
 
     protected function getNameChar($id){
-        $name = $this->connectRoyals("SELECT name FROM characters WHERE id = $id");
+        $name = $this->connectMaple("SELECT name FROM characters WHERE id = $id");
         return $name -> fetch_array()['name'];
     }
 
-    // === Database Vote ===
+    
+
+    //=======================================//
+    //          === Database Vote ===
     protected function connect($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_VOTE);
 
@@ -128,10 +131,27 @@ class DataBase{
             $this -> db_info = 'you need a character as a minimum level 15';
             return false;
         }
-
-        $update = $this -> connect("UPDATE voted SET votes = votes + 1  WHERE id_user = $id");
-                
+        if(ADDITIONAL_VOTE){
+            $update = $this -> connect("UPDATE voted SET votes = votes + 1, vote_additional = vote_additional + 1 WHERE id_user = $id");
+        }else{
+            $update = $this -> connect("UPDATE voted SET votes = votes + 1 WHERE id_user = $id");
+        }
+        
         return ($update) ? $this -> select($id, 'votes') : false;
+    }
+
+    /*
+    ====================================================
+        === Insert Items by vote in MapleStory Game ===
+    ====================================================
+     */
+    protected function setGameItems($items, $idUser){
+        $idChar = $this->select($idUser, 'default_id_character');
+        foreach ($items as $item) {
+            $idItem = $item['item']['id'];
+            $countItem = $item['quantity'];
+            $this-> connectMaple("INSERT INTO inventoryitems(characterid, accountid, itemid, quantity) VALUES($idChar, $idUser, $idItem, $countItem)");
+        }
     }
         
 }

@@ -15,6 +15,6 @@
         sec--;
         time_element.innerHTML = sec;
     }, 1000)
-})();
+});
 
 

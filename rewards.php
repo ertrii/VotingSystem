@@ -5,8 +5,7 @@ class Reward {
     private $vote;
     private $additionalVote = false;
 
-    function __construct($_vote, $_additionalVote = false){
-        
+    function __construct($_vote, $_additionalVote = false){        
         $this-> vote = intval($_vote);
         if($_additionalVote) $this-> additionalVote = intval($_additionalVote);
     }
@@ -14,37 +13,36 @@ class Reward {
     private $rewards = array();
 
     private function countItem($prize, $i){
-        $_count;
+        $_quantity;
 
-        if(is_array($prize['count'])){                        
+        if(is_array($prize['quantity'])){                        
 
-            if($i < count($prize['count'])){
+            if($i < count($prize['quantity'])){
                 
-                if(is_array($prize['count'][$i])){
-                    $_count = rand($prize['count'][$i]['min'], $prize['count'][$i]['max']);
+                if(is_array($prize['quantity'][$i])){
+                    $_quantity = rand($prize['quantity'][$i]['min'], $prize['quantity'][$i]['max']);
                 }else{
-                    $_count = $prize['count'][$i];                    
+                    $_quantity = $prize['quantity'][$i];                    
                 }
             }else{
                 
-                if(is_array(end($prize['count']))){
-                    $_count = rand(end($prize['count'])['min'], end($prize['count'])['max']);
+                if(is_array(end($prize['quantity']))){
+                    $_quantity = rand(end($prize['quantity'])['min'], end($prize['quantity'])['max']);
                 }else{
-                    $_count = end($prize['count']);
+                    $_quantity = end($prize['quantity']);
                 }
-
                 
             }
                         
 
         }else{
-            $_count = $prize['count'];
+            $_quantity = $prize['quantity'];
         }
                     
 
         return array(
-            'item'      =>      $prize['item'],
-            'count'     =>      $_count
+            'item'          =>      $prize['item'],
+            'quantity'      =>      $_quantity
         );
     }
 
@@ -53,7 +51,7 @@ class Reward {
         foreach (Items::get() as $prize) {
             if(!$prize['status']) continue;
             
-            $_countItemTemporal;
+            $_itemTemporal;
 
             for ($i=0; $i < count($prize['voteRequerid']); $i++) {
 
@@ -61,7 +59,8 @@ class Reward {
                     case 'continuous':
                     case 'c':
                         if($this->vote >= $prize['voteRequerid'][$i])
-                            $_countItemTemporal = $this->countItem($prize, $i);                             
+                            $_itemTemporal = $this->countItem($prize, $i);
+                            //print_r($_itemTemporal);
                         break;
 
                     case 'requerid':
@@ -75,7 +74,7 @@ class Reward {
                     case 'accumulate':
                     case 'a':
                         if(!$this->additionalVote){
-                            $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error: The additional vote is needed', 'img' => 'error.png'), 'count' => null) ;
+                            $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error: The additional vote is needed', 'img' => 'error.png'), 'quantity' => null) ;
                             break 2;
                         }
                         
@@ -86,20 +85,20 @@ class Reward {
                         break;
                         
                     default:
-                        $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error type', 'img' => 'error.png'), 'count' => null) ;
+                        $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error type', 'img' => 'error.png'), 'quantity' => null) ;
                         break 2;
                 }                                                                                        
 
             }
             
-            if($prize['type'] === 'continuous') $this->rewards[] = $_countItemTemporal;
+            if($prize['type'] === 'continuous' || $prize['type'] === 'c') $this->rewards[] = $_itemTemporal;
             
         }
         
     }
 
     public function get(){        
-        $this->process();
+        $this->process();        
         return $this->rewards;
     }
 }
