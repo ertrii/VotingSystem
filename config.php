@@ -20,7 +20,12 @@ const DB_VOTE = 'vote';
 //DATABASE MAPLE
 const DB_ROYALS = 'maple_maplelife';  //Example
 
+//System
+const TIMEZONE = 'America/Lima';
+const TIMEFORTHENEXTVOTE = 24;  //hours
 const MIN_LV_REQUERID = 15;
+//const VERIFY
+
 const ADDITIONAL_VOTE = true;
 
 //System Vote

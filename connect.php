@@ -7,7 +7,8 @@ include_once('config.php');
 class DataBase{
     
     //=== Database Maple ===
-    
+    protected $db_info = '';
+
     protected function connectMaple($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_ROYALS);
 
@@ -45,7 +46,27 @@ class DataBase{
         return $name -> fetch_array()['name'];
     }
 
-    
+    protected function getAddress($user){
+        $consult = $this -> connectMaple("SELECT id, ip FROM accounts WHERE name = '$user'");
+        $address = $consult-> fetch_array();
+        if ($address === null) {
+            $this->db_info = 'This is user is not exists' ;
+            return false;
+        } else{
+            //return ($address['macs'] === null)
+            $address['last_vote'] = $this->select($address['id'], 'last_vote');
+            
+            foreach ($address as $ipmac) {                
+                if($ipmac === null) {
+                    $this->db_info = 'Please login firts in the game...';
+                    return false;
+                }
+            }
+        }
+        
+        return $address;
+        
+    }
 
     //=======================================//
     //          === Database Vote ===
@@ -60,9 +81,7 @@ class DataBase{
 			return $dB->query($query);
 			
 		}
-    }
-
-    protected $db_info = '';
+    }    
 
     //=== Table Vote ===    
     protected function select($id, $row){

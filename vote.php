@@ -6,6 +6,12 @@ include_once('rewards.php');
 class Vote extends DataBase
 {
     private $chars = array();
+    //info about vote
+    public $info = array(
+        'formVote' => array('text' => '', 'template' => '', 'status' => 0),
+        'formConfig' => array('text' => '', 'template' => '', 'status' => 0),
+        'reward' => null);
+
     function __construct(){        
         
         if (isset($_SESSION['id'])){
@@ -20,14 +26,31 @@ class Vote extends DataBase
         }
         
     }
+
+    private function canIvote($user){
+        $address = parent::getAddress($user);        
+        if(!$address){
+            $this->prepareInfo($this->db_info);
+            return false;
+        }
+        date_default_timezone_set(TIMEZONE);
+
+        $_current_date  = new DateTime(date("Y-m-d H:i:s"));
+        $_nextDateForVote = new DateTime(date('Y-m-d H:i:s', strtotime($address['last_vote'] . '+'. TIMEFORTHENEXTVOTE .'hour')));                
+
+        $_interval = $_current_date->diff($_nextDateForVote);
+        $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_interval->format("%Y-%M-%D %H:%I:%S") : $_interval->format("%H:%I:%S");
+
+        if($_current_date >= $_nextDateForVote){
+            return true;
+        }else{
+            $this->prepareInfo('You can not vote until you complete 24 hours, Remaining time: ' . $_remaining_time);
+            return false;
+        }
+        
+    }
     
-    private $vote = 0;
-    
-    //info about vote
-    public $info = array(
-        'formVote' => array('text' => '', 'template' => '', 'status' => 0),
-        'formConfig' => array('text' => '', 'template' => '', 'status' => 0),
-        'reward' => null);
+    private $vote = 0;        
 
     //Reward after the vote
     private function reward($user){        
@@ -117,13 +140,17 @@ class Vote extends DataBase
             $this->prepareInfo('Please, write your user name');
             return;
         }
+        if(!$this->canIvote($user)){            
+            return;
+        }
         
         $this->vote = parent::vote($user);          //Database Consult and save
 
         if (!$this -> vote) {            
+            //false
             $this->prepareInfo($this->db_info, 0);
         }else{
-            //prepare info and get text reward
+            //succsess            
             $this->prepareInfo($this -> reward($user), 1);
         }        
         
