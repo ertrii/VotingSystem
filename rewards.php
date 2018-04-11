@@ -51,16 +51,17 @@ class Reward {
         foreach (Items::get() as $prize) {
             if(!$prize['status']) continue;
             
-            $_itemTemporal;
+            $_itemTemporal = null;
 
             for ($i=0; $i < count($prize['voteRequerid']); $i++) {
 
                 switch ($prize['type']) {
                     case 'continuous':
                     case 'c':
+                        print_r($prize['voteRequerid'][$i]);
+                        echo '<br>';
                         if($this->vote >= $prize['voteRequerid'][$i])
-                            $_itemTemporal = $this->countItem($prize, $i);
-                            //print_r($_itemTemporal);
+                            $_itemTemporal = $this->countItem($prize, $i);                            
                         break;
 
                     case 'requerid':
@@ -87,11 +88,15 @@ class Reward {
                     default:
                         $this->rewards[] = array("item" => array('id' => -1, 'name' => 'error type', 'img' => 'error.png'), 'quantity' => null) ;
                         break 2;
-                }                                                                                        
-
+                }
             }
-            
-            if($prize['type'] === 'continuous' || $prize['type'] === 'c') $this->rewards[] = $_itemTemporal;
+            //print_r($_itemTemporal);            
+            if($prize['type'] === 'continuous' || $prize['type'] === 'c') {                
+                if($_itemTemporal !== null){
+                    $this->rewards[] = $_itemTemporal;
+                    $_itemTemporal = null;
+                }                
+            } 
             
         }
         

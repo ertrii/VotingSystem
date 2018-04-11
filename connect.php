@@ -54,6 +54,10 @@ class DataBase{
             return false;
         } else{            
             $address['last_vote'] = $this->select($address['id'], 'last_vote');
+
+            if ($address['last_vote'] === null){
+                $address['last_vote'] = '2013-05-19 00:00:00';
+            }
             
             foreach ($address as $ipmac) {                
                 if($ipmac === null) {
@@ -127,7 +131,8 @@ class DataBase{
                 return false;
             }else{                
                 //$this->insert($id, $chars[1][0]);
-                $char = $chars[1][0];               //First Character for Default
+                print_r($chars);
+                $char = $chars[0][0];               //First Character for Default
                 $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ($id, '$char')");
             }
             
