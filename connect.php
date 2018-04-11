@@ -10,7 +10,7 @@ class DataBase{
     protected $db_info = '';
 
     protected function connectMaple($query){
-        $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_ROYALS);
+        $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_MAPLE);
 
 		if ($dB->connect_errno) {
 			echo "Error";
@@ -52,8 +52,7 @@ class DataBase{
         if ($address === null) {
             $this->db_info = 'This is user is not exists' ;
             return false;
-        } else{
-            //return ($address['macs'] === null)
+        } else{            
             $address['last_vote'] = $this->select($address['id'], 'last_vote');
             
             foreach ($address as $ipmac) {                
@@ -63,9 +62,7 @@ class DataBase{
                 }
             }
         }
-        
         return $address;
-        
     }
 
     //=======================================//
@@ -76,10 +73,8 @@ class DataBase{
 		if ($dB->connect_errno) {
 			echo "Error";
 			exit();
-		}else{
-			//self->$msg = 'conexion establecida...';
-			return $dB->query($query);
-			
+		}else{			
+			return $dB->query($query);			
 		}
     }    
 
@@ -91,11 +86,11 @@ class DataBase{
     }
     
 
-    protected function insert($id, $char){
+/*    protected function insert($id, $char){
         $insert = $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ('$id', '$char')");
         return ($insert) ? true : false;
     }
-
+*/
     protected function defaultChar($char){        
         $id = $_SESSION['id'];
         $_chars = $this->getCharsUser($id);
@@ -114,29 +109,30 @@ class DataBase{
         return ($update) ? true : false;
     }
 
-    protected function vote($user){        
-        $id = $this -> consultIdUser($user);        //Verify if user exists in Royals's database (accounts table)
+    protected function vote($user, $ip = false){        
+        $id = $this -> consultIdUser($user);        //Verify if user exists in Maple's database (accounts table)
         if (!$id){
             $this -> db_info = 'This user does not exists';
             return false;
         }
 
         $chars = $this -> getCharsUser($id);
-        //Verificar si existe el usuario en la table vote sino agregarlo consiguiendo los datos de la tabla de maple        
-        $userExistsInVote = $this -> connect("SELECT IF (EXISTS (SELECT id_user FROM voted WHERE id_user = $id), 1, 0)");
+        //Verificar si existe el usuario en la table voted de Vote Database sino agregarlo consiguiendo los datos de la tabla de maple        
+        $userExistsInVoteDB = $this -> connect("SELECT IF (EXISTS (SELECT id_user FROM voted WHERE id_user = $id), 1, 0)");
 
-        if (!$userExistsInVote -> fetch_array()[0]){
+        if (!$userExistsInVoteDB -> fetch_array()[0]){
             
             if(!$chars){
                 $this-> db_info = 'You dont have a character';
                 return false;
-            }else{
-                
-                $this->insert($id, $chars[1][0]);   //First Character for Default
+            }else{                
+                //$this->insert($id, $chars[1][0]);
+                $char = $chars[1][0];               //First Character for Default
+                $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ($id, '$char')");
             }
             
-
         }
+
         $lowLv = false;
 
         foreach ($chars as $char) {
@@ -150,6 +146,9 @@ class DataBase{
             $this -> db_info = 'you need a character as a minimum level 15';
             return false;
         }
+
+        if($ip && IPCONTROL) $this -> connect("UPDATE ipcontrol SET votes = votes + 1 WHERE ip = '$ip'");
+        
         if(ADDITIONAL_VOTE){
             $update = $this -> connect("UPDATE voted SET votes = votes + 1, vote_additional = vote_additional + 1 WHERE id_user = $id");
         }else{
@@ -159,6 +158,21 @@ class DataBase{
         return ($update) ? $this -> select($id, 'votes') : false;
     }
 
+
+    protected function ipReport($ip){
+        $ipRegistered = $this -> connect("SELECT IF (EXISTS (SELECT id FROM ipcontrol WHERE ip = '$ip'), 1, 0)");
+
+        if(!$ipRegistered->fetch_array()[0]) $this -> connect("INSERT INTO ipcontrol(ip) VALUES ('$ip')");
+
+        $consult = $this->connect("SELECT last_vote, registration_date, banned FROM ipcontrol WHERE ip = '$ip'");
+
+        return $consult->fetch_array();
+    }
+
+    protected function banIP($ip, $status = true){
+        $_status = ($status) ? 1 : 0;
+        return ($this-> connect("UPDATE ipcontrol SET banned = $_status WHERE ip = $ip")) ? true : false;
+    }
     /*
     ====================================================
         === Insert Items by vote in MapleStory Game ===

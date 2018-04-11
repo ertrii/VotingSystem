@@ -27,6 +27,43 @@ class Vote extends DataBase
         
     }
 
+    public function getIP()
+    {
+       $ip = "";
+       if(isset($_SERVER))
+       {
+           if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
+           {
+               $ip=$_SERVER['HTTP_CLIENT_IP'];
+            }
+            elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+            {
+                $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
+            else
+            {
+                $ip=$_SERVER['REMOTE_ADDR'];
+            }
+       }
+       else
+       {
+            if ( getenv( 'HTTP_CLIENT_IP' ) )
+            {
+                $ip = getenv( 'HTTP_CLIENT_IP' );
+            }
+            elseif( getenv( 'HTTP_X_FORWARDED_FOR' ) )
+            {
+                $ip = getenv( 'HTTP_X_FORWARDED_FOR' );
+            }
+            else
+            {
+                $ip = getenv( 'REMOTE_ADDR' );
+            }
+       }  
+        // En algunos casos muy raros la ip es devuelta repetida dos veces separada por coma
+        return (strstr($ip,',')) ? array_shift(explode(',', $ip)) : $ip;
+    }
+
     private function canIvote($user){
         $address = parent::getAddress($user);        
         if(!$address){
@@ -42,12 +79,32 @@ class Vote extends DataBase
         $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_interval->format("%Y-%M-%D %H:%I:%S") : $_interval->format("%H:%I:%S");
 
         if($_current_date >= $_nextDateForVote){
-            return true;
-        }else{
+            if(!IPCONTROL) return true;
+            
+            $_ip = $this->getIP();
+            $ipInfo = parent::ipReport($_ip);
+
+            if($ipInfo['banned'] == 1){
+                $this -> prepareInfo("IP $_ip is banned...");
+                return false;
+            }
+
+            $_nextDateForVoteByIP = new DateTime(date('Y-m-d H:i:s', strtotime($ipInfo['last_vote'] . '+'. TIMEFORTHENEXTVOTE .'hour')));
+
+            if($_current_date >= $_nextDateForVoteByIP) {
+                return $_ip;    //true
+            }else{
+                $_intervalByIP = $_current_date->diff($_nextDateForVoteByIP);
+                $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_intervalByIP->format("%Y-%M-%D %H:%I:%S") : $_intervalByIP->format("%H:%I:%S");
+                $this->prepareInfo('You can not vote here until you complete 24 hours, Remaining time: ' . $_remaining_time);
+                return false;
+            }
+            
+            
+        }else{            
             $this->prepareInfo('You can not vote until you complete 24 hours, Remaining time: ' . $_remaining_time);
             return false;
         }
-        
     }
     
     private $vote = 0;        
@@ -140,11 +197,19 @@ class Vote extends DataBase
             $this->prepareInfo('Please, write your user name');
             return;
         }
-        if(!$this->canIvote($user)){            
+        $cIv = $this->canIvote($user);
+        if(!$cIv){
             return;
+        }else{
+            if(IPCONTROL){
+
+                $this->vote = parent::vote($user, $cIv);          //Database Consult and save
+            }else{
+                $this->vote = parent::vote($user);          //Database Consult and save
+            }
         }
         
-        $this->vote = parent::vote($user);          //Database Consult and save
+        
 
         if (!$this -> vote) {            
             //false

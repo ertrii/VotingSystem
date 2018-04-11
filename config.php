@@ -7,31 +7,32 @@ $_SESSION['id'] = '1';
 
 //Config DataBase
 
-const VOTING_SYSTEM = true;    // on / off
+const VOTING_SYSTEM             =           true;    // on / off
 //HOST
-const HOST = 'localhost';
+const HOST                      =           'localhost';
 
 //USER DATABASE
-const DB_USER = 'root';
-const DB_PASS = '';
+const DB_USER                   =           'root';
+const DB_PASS                   =           '';
 
 //DATABASE VOTE
-const DB_VOTE = 'vote';
+const DB_VOTE                   =           'vote';
 //DATABASE MAPLE
-const DB_ROYALS = 'maple_maplelife';  //Example
+const DB_MAPLE                  =           'maple_maplelife';  //Example
 
 //System
-const TIMEZONE = 'America/Lima';
-const TIMEFORTHENEXTVOTE = 24;  //hours
-const MIN_LV_REQUERID = 15;
+const TIMEZONE                  =           'America/Lima';
+const TIMEFORTHENEXTVOTE        =           24;  //hours
+const IPCONTROL                 =           true;
+const MIN_LV_REQUERID           =           15;
 //const VERIFY
 
-const ADDITIONAL_VOTE = true;
+const ADDITIONAL_VOTE           =           true;
 
 //System Vote
-const VOTE_LINK = 'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
+const VOTE_LINK                 =           'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
 
-const VOTE_INFO = (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
+const VOTE_INFO                 =           (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
 
 
 class Items{
@@ -39,7 +40,7 @@ class Items{
     private const PRIZE_1  = array(
         'status'        =>      true,
         'type'          =>      'continuous',
-        'quantity'         =>      [
+        'quantity'      =>      [
             array('min' => 0, 'max' => 1),
             array('min' => 1, 'max' => 1),
             array('min' => 1, 'max' => 3)
@@ -58,7 +59,7 @@ class Items{
 
     private const PRIZE_2 = array(
         'status'        =>      true,
-        'quantity'         =>      1,
+        'quantity'      =>      1,
         'type'          =>      'c',
         'voteRequerid'  =>      [12, 50, 100, 198, 500, 1000],
         'item'          =>      array(
@@ -73,7 +74,7 @@ class Items{
 
     private const ADDITIONAL_PRIZE = array(
         'status'        =>      true,
-        'quantity'         =>      2,
+        'quantity'      =>      2,
         'type'          =>      'accumulate',
         'voteRequerid'  =>      [10, 50, 100, 250, 500, 1000],
         'item'          =>      array(
