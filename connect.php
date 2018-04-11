@@ -50,7 +50,7 @@ class DataBase{
         $consult = $this -> connectMaple("SELECT id, ip FROM accounts WHERE name = '$user'");
         $address = $consult-> fetch_array();
         if ($address === null) {
-            $this->db_info = 'This is user is not exists' ;
+            $this->db_info = Message::USER_DONT_EXIST;
             return false;
         } else{            
             $address['last_vote'] = $this->select($address['id'], 'last_vote');
@@ -61,7 +61,7 @@ class DataBase{
             
             foreach ($address as $ipmac) {                
                 if($ipmac === null) {
-                    $this->db_info = 'Please login firts in the game...';
+                    $this->db_info = Message::PLAY_THE_GAME_FIRST;
                     return false;
                 }
             }
@@ -88,13 +88,7 @@ class DataBase{
         $_v = $select->fetch_array();
         return $_v[$row];
     }
-    
 
-/*    protected function insert($id, $char){
-        $insert = $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ('$id', '$char')");
-        return ($insert) ? true : false;
-    }
-*/
     protected function defaultChar($char){        
         $id = $_SESSION['id'];
         $_chars = $this->getCharsUser($id);
@@ -116,7 +110,7 @@ class DataBase{
     protected function vote($user, $ip = false){        
         $id = $this -> consultIdUser($user);        //Verify if user exists in Maple's database (accounts table)
         if (!$id){
-            $this -> db_info = 'This user does not exists';
+            $this -> db_info = Message::USER_DONT_EXIST;
             return false;
         }
 
@@ -127,7 +121,7 @@ class DataBase{
         if (!$userExistsInVoteDB -> fetch_array()[0]){
             
             if(!$chars){
-                $this-> db_info = 'You dont have a character';
+                $this-> db_info = Message::DONT_HAVE_CHAR;
                 return false;
             }else{                
                 //$this->insert($id, $chars[1][0]);
@@ -148,7 +142,7 @@ class DataBase{
         }
 
         if(!$lowLv){
-            $this -> db_info = 'you need a character as a minimum level 15';
+            $this -> db_info = Message::MIN_LV_REQUERID;
             return false;
         }
 

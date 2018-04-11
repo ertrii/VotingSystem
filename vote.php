@@ -96,13 +96,13 @@ class Vote extends DataBase
             }else{
                 $_intervalByIP = $_current_date->diff($_nextDateForVoteByIP);
                 $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_intervalByIP->format("%Y-%M-%D %H:%I:%S") : $_intervalByIP->format("%H:%I:%S");
-                $this->prepareInfo('You can not vote here until you complete 24 hours, Remaining time: ' . $_remaining_time);
+                $this->prepareInfo(Message::CANTVOTE_BYIP . 'Remaining time: ' . $_remaining_time);
                 return false;
             }
             
             
-        }else{            
-            $this->prepareInfo('You can not vote until you complete 24 hours, Remaining time: ' . $_remaining_time);
+        }else{
+            $this->prepareInfo(Message::CANTVOTE . 'Remaining time: ' . $_remaining_time);
             return false;
         }
     }
@@ -116,10 +116,10 @@ class Vote extends DataBase
         $_reward = $r->get();
         $this -> info['reward'] = $_reward;
 
-        $div = 'Thank you for the Vote. You Total Votes: <br>' . $this->vote;
+        $div = Message::SUCCESSFUL_VOTE . 'Total Votes: ' . $this->vote;
 
         if(count($_reward) === 0){
-            return $div .= 'Sorry you did not win, try it on the next vote:';
+            return $div .= Message::DONTWINITEMS;
         }
         else{
             parent::setGameItems($_reward, $_idUser);
@@ -128,12 +128,11 @@ class Vote extends DataBase
             <br>You got:<ul>';
 
             foreach ($_reward as $prize) {
-                $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';                
+                $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
             }
             $div .= '</ul>';
         }
-        return $div .= 'You will be directed to gtop100 in <span id="count_time">5</span> seconds...<script src="script.js"></script>';
-
+        return $div .= 'You will be directed to gtop100 in <span id="count_time">5</span> seconds...';
     }
 
     /** Template HTML <form>  */
@@ -147,10 +146,7 @@ class Vote extends DataBase
     private function formConfig(){
         
         if ($this -> chars === null)
-            return '<p id="error">Please create your first character firts</p>';
-            //return null;
-        
-
+            return '<p id="error">'. Message::DONT_HAVE_CHAR .'</p>';
         $_chars = '';
         foreach ($this -> chars as $c) {
             $_chars .= '<option value="' . $c . '">' . $c . '</option>';
@@ -158,7 +154,7 @@ class Vote extends DataBase
         
         $nameChar = parent::getNameChar(parent::select($_SESSION['id'], 'default_id_character'));
 
-        if($nameChar == '') $nameChar = 'error e1002';  //means that the name was not obtained.
+        if($nameChar == '') $nameChar = 'error e1000';  //means that the name was not obtained.
 
         $form_Config = '
         <p>Default Character: '. $nameChar .'</p>
@@ -170,7 +166,6 @@ class Vote extends DataBase
 
         return $form_Config;
     }
-       
 
     private function prepareInfo($text, $status = 0){
         $post = '';
@@ -194,7 +189,7 @@ class Vote extends DataBase
     private function start($user){
                 
         if ($user == ''){            
-            $this->prepareInfo('Please, write your user name');
+            $this->prepareInfo(Message::INPUT_TEXT_NULL);
             return;
         }
         $cIv = $this->canIvote($user);
@@ -224,15 +219,13 @@ class Vote extends DataBase
     //Config default Character
     private function configDefaultChar($char){
         if ($char == '') {
-            $this->prepareInfo('Please, select you character');
+            $this->prepareInfo(Message::SELECT_CHAR);
             return;
         }        
         
         parent::defaultChar($char);
-        $this->prepareInfo('done', 1);        
+        $this->prepareInfo(Message::DEFAULT_CHAR_DONE , 1);
     }
-
-
 
     //Get form templates
     public function getForm_Vote(){                

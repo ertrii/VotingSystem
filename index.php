@@ -18,5 +18,6 @@ $vote = new Vote();
     <!--  if there is a session, print form_Config  -->    
     <?= $vote -> getForm_Config()?>
     <?= $vote -> info['formConfig']['template'] ?>
+    <script src="script.js"></script>
 </body>
 </html>

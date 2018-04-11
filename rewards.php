@@ -57,9 +57,7 @@ class Reward {
 
                 switch ($prize['type']) {
                     case 'continuous':
-                    case 'c':
-                        print_r($prize['voteRequerid'][$i]);
-                        echo '<br>';
+                    case 'c':                        
                         if($this->vote >= $prize['voteRequerid'][$i])
                             $_itemTemporal = $this->countItem($prize, $i);                            
                         break;
