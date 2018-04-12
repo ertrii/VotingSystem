@@ -1,9 +1,11 @@
 
 (() => {
     let sec = 5;
-    let time_element = document.getElementById('count_time');    
+    let time_element = document.getElementById('v-count_time');    
 
-    let time = setInterval(() => {        
+    if(time_element === null) return;    
+    
+    let time = setInterval(() => {      
         if(sec <= 0){
             document.getElementById('link_vote').click()
             clearInterval(sec);

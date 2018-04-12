@@ -130,7 +130,7 @@ class Vote extends DataBase
         else{
             parent::setGameItems($_reward, $_idUser);
             //Link: hidden
-            $div .= '<a id="link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>
+            $div .= '<a id="v-link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>
             <p class="v-sub_title_items">You got:</p>
             <ul class="v-list_items">';
             foreach ($_reward as $prize) {
