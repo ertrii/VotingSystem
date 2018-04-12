@@ -8,8 +8,8 @@ class Vote extends DataBase
     private $chars = array();
     //info about vote
     public $info = array(
-        'formVote' => array('text' => '', 'template' => '', 'status' => 0),
-        'formConfig' => array('text' => '', 'template' => '', 'status' => 0),
+        'formVote' => array('text' => '', 'status' => 0),
+        'formConfig' => array('text' => '', 'status' => 0),
         'reward' => null);
 
     function __construct(){        
@@ -96,13 +96,13 @@ class Vote extends DataBase
             }else{
                 $_intervalByIP = $_current_date->diff($_nextDateForVoteByIP);
                 $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_intervalByIP->format("%Y-%M-%D %H:%I:%S") : $_intervalByIP->format("%H:%I:%S");
-                $this->prepareInfo(Message::CANTVOTE_BYIP . 'Remaining time: ' . $_remaining_time);
+                $this->prepareInfo(Message::CANTVOTE_BYIP . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');
                 return false;
             }
             
             
         }else{
-            $this->prepareInfo(Message::CANTVOTE . 'Remaining time: ' . $_remaining_time);
+            $this->prepareInfo(Message::CANTVOTE . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');
             return false;
         }
     }
@@ -116,7 +116,7 @@ class Vote extends DataBase
         $_reward = $r->get();
         $this -> info['reward'] = $_reward;
 
-        $div = Message::SUCCESSFUL_VOTE . 'Total Votes: ' . $this->vote;
+        $div = Message::SUCCESSFUL_VOTE . '<p class="v-total_votes">Total Votes: ' . $this->vote . '</p>';
 
         if(count($_reward) === 0){
             return $div .= Message::DONTWINITEMS;
@@ -125,21 +125,21 @@ class Vote extends DataBase
             parent::setGameItems($_reward, $_idUser);
             //Link: hidden
             $div .= '<a id="link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>
-            <br>You got:<ul>';
-
+            <p class="v-sub_title_items">You got:</p>
+            <ul class="v-list_items">';
             foreach ($_reward as $prize) {
                 $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
             }
             $div .= '</ul>';
         }
-        return $div .= 'You will be directed to gtop100 in <span id="count_time">5</span> seconds...';
+        return $div .= Message::VOTE_NOTICE;
     }
 
     /** Template HTML <form>  */
     private $form_Vote ='
-        <form method="post">
+        <form method="post" id="formVote">
             <input type="text" name="user" id="" placeholder="User">
-            <input type="submit" value="Vote" name="vote">
+            <input type="submit" value="VOTE" name="vote">
         </form>
         ';
 
@@ -157,10 +157,10 @@ class Vote extends DataBase
         if($nameChar == '') $nameChar = 'error e1000';  //means that the name was not obtained.
 
         $form_Config = '
-        <p>Default Character: '. $nameChar .'</p>
-        <form method="post">            
+        <p class="v-default_char">Default Character: '. $nameChar .'</p>
+        <form method="post" id="formConfig">            
             <select name="char">'. $_chars .'</select>
-            <input type="submit" value="Done">
+            <input type="submit" value="DONE">
         </form>
         ';
 
@@ -175,12 +175,7 @@ class Vote extends DataBase
         if(isset($_POST['char'])){
             $post = 'formConfig';
         }
-        $this -> info[$post]['text'] = $text;        
-        
-        if($status !== 1){
-            $this -> info[$post]['template'] = '<div id="error">' . $text . '</div>';
-        } 
-        $this -> info[$post]['template'] = '<div id="success"> '. $text . '</div>';
+        $this -> info[$post]['text'] = $text;
         
         $this -> info[$post]['status'] = $status;          // 0 = False / 1 = true        
     }
