@@ -3,7 +3,7 @@
 //Session, testing
 session_start();
 
-$_SESSION['id'] = '4';
+$_SESSION['id'] = 6;
 
 //Config DataBase
 
@@ -45,7 +45,7 @@ class Message{
     public const SELECT_CHAR = '<p class="v-vote_notice">Please, select your character<p>';    
     public const USER_DONT_EXIST = '<p class="v-vote_notice">This is user is not exists<p>';
     public const PLAY_THE_GAME_FIRST = '<p class="v-vote_notice">Please login firts in the game...<p>';
-    public const MIN_LV_REQUERID = '<p class="v-vote_notice">you need a character as a minimum level 15<p>';
+    public const MIN_LV_REQUERID = '<p class="v-vote_notice">You need a character as a minimum level 15<p>';
     public const DONT_HAVE_CHAR = '<p class="v-config_notice">You dont have a character in the game, please create one</p>';
     public const DEFAULT_CHAR_DONE = '<p class="v-config_done">Done...</p>';
 }

@@ -5,7 +5,7 @@ include_once('connect.php');
 include_once('rewards.php');
 class Vote extends DataBase
 {
-    private $chars = array();
+    private $chars = null;
     //info about vote
     public $info = array(
         'formVote' => array('text' => '', 'status' => 0),
@@ -20,8 +20,8 @@ class Vote extends DataBase
                 $this -> chars = null;
                 return;
             }
-            foreach ($_chars as $char) {
-                array_push($this -> chars, $char[1]);
+            foreach ($_chars as $char) {                
+                $this -> chars[] = $char;
             }
         }
         
@@ -146,13 +146,18 @@ class Vote extends DataBase
     private function formConfig(){
         
         if ($this -> chars === null)
-            return '<p id="error">'. Message::DONT_HAVE_CHAR .'</p>';
+            return Message::DONT_HAVE_CHAR;
         $_chars = '';
         foreach ($this -> chars as $c) {
-            $_chars .= '<option value="' . $c . '">' . $c . '</option>';
+            $_chars .= '<option value="' . $c[1] . '">' . $c[1] . '</option>';
         }
-        
-        $nameChar = parent::getNameChar(parent::select($_SESSION['id'], 'default_id_character'));
+
+        $_defaultChar = parent::select($_SESSION['id'], 'default_id_character');
+        if($_defaultChar === null) {
+            parent::registerUserInVoteDB($_SESSION['id'], $this -> chars[0][0]);            
+            $_defaultChar = parent::select($_SESSION['id'], 'default_id_character');
+        }
+        $nameChar = parent::getNameChar($_defaultChar);
 
         if($nameChar == '') $nameChar = 'error e1000';  //means that the name was not obtained.
 

@@ -107,6 +107,11 @@ class DataBase{
         return ($update) ? true : false;
     }
 
+    protected function registerUserInVoteDB($id, $char){
+        $this -> connect("INSERT INTO voted(id_user, default_id_character, last_vote) VALUES ($id, '$char', '2013-05-19 00:00:00')");
+    }
+
+
     protected function vote($user, $ip = false){        
         $id = $this -> consultIdUser($user);        //Verify if user exists in Maple's database (accounts table)
         if (!$id){
@@ -124,10 +129,10 @@ class DataBase{
                 $this-> db_info = Message::DONT_HAVE_CHAR;
                 return false;
             }else{                
-                //$this->insert($id, $chars[1][0]);
-                print_r($chars);
-                $char = $chars[0][0];               //First Character for Default
-                $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ($id, '$char')");
+                
+                /*$char = $chars[0][0];               //First Character for Default
+                $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ($id, '$char')");*/
+                $this -> registerUserInVoteDB($id, $chars[0][0]);
             }
             
         }
