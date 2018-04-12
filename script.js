@@ -2,13 +2,13 @@
 (() => {
     let sec = 5;
     let time_element = document.getElementById('v-count_time');    
-
-    if(time_element === null) return;    
+    let link = document.getElementById('v-link_vote');
+    if(time_element === null || link === null) return;
     
     let time = setInterval(() => {      
         if(sec <= 0){
-            document.getElementById('link_vote').click()
-            clearInterval(sec);
+            link.click()
+            clearInterval(time);
             return;
         }
         

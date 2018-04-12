@@ -45,25 +45,49 @@ $v = new Vote();
             list-style: none;
         }
         .navbar .list ul li{
-            margin-left: 5px;
+            margin-left: 5px;            
         }
         .navbar .list ul li a{
             text-decoration: none;
+            color: #555;
+            font-weight: bold;
+            font-size: 12px;
+            font-family: sans-serif;
         }
-        .logo img{
-            max-width: 150px;
-            display: block;
-        }
+        .logo a{
+            font-size: 16pt;
+            text-decoration: none;
+            color: #FED42A;
+            font-weight: bold;            
+        }        
 
         main{
             max-width: 750px;
             display: flex;
             margin-left: auto;
             margin-right: auto;            
+            flex-wrap: wrap;
         }
         .col1, .col2{
             width: 50%;
             padding: 2.5em 0;            
+        }
+
+        .col1 h1{
+            font-family: sans-serif;
+            padding-bottom: 10px;
+        }
+        .col1 h2{
+            padding-top: 15px;
+            font-size: 14pt;
+        }        
+        .col1 ul{
+            padding: 15px 0 0 15px;
+            font-size: 9pt;
+            font-family: sans-serif;
+        }
+        .col1 ul li{
+            padding-bottom: 5px;
         }
         .col2{
             display: flex;
@@ -149,6 +173,21 @@ $v = new Vote();
         footer{
             text-align: center;            
         }
+
+                @media(max-width: 750px){
+            
+            nav,main{
+                padding: 0 25px;
+            }
+        }
+        @media(max-width: 550px){
+            .col1, .col2{
+                width: 100%;
+            }
+            .col2{
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -156,11 +195,11 @@ $v = new Vote();
     <div class="container">
     <nav>
         <div class="navbar">
-            <div class="logo"><img src="https://mapleroyals.com/logo.png" alt=""></div>
+            <div class="logo"><a href="#">VOTING SYSTEM</a></div>
             <div class="list">
                 <ul>
-                   <li><a href="">SESSION</a></li>
-                   <li><a href="">AUTOR</a></li>
+                   <li><a href="">GITHUB</a></li>
+                   <li><a href="https://twitter.com/ertrii" target= "_blank">TWITTER</a></li>
                 </ul>
             </div>
         </div>
@@ -168,8 +207,17 @@ $v = new Vote();
     </nav>
     <main>
         <div class="col1">
-            <h1>Welcome</h1>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos, vero? Doloremque odit dolorem voluptas nulla harum ducimus quae iusto vero, animi impedit, earum, recusandae molestiae est laudantium aliquid asperiores ipsam!</p>
+            <h1>Welcome</h1>            
+            <p>This site is to test the voting system and verify that everything is fine.</p>
+            <h2>Default Settings:</h2>
+            <ul>
+                <li>Voting System: on</li>
+                <li>TimeZone: América/Lima</li>
+                <li>Time for the next vote: 1 hour</li>
+                <li>Ip Control: on</li>
+                <li>Min Level Requerid: 15</li>
+                <li>Additional Vote: on</li>                
+            </ul>
         </div>
         <div class="col2">
             <div class="forms">
@@ -183,7 +231,7 @@ $v = new Vote();
         </div>
     </main>
     <footer>
-        <p>All right reserved. Voting System by Churano</p>
+        <p>Voting System by ertrii/Churano</p>
     </footer>
     </div>
     

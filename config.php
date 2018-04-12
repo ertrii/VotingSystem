@@ -22,7 +22,7 @@ const DB_MAPLE                  =           'maple_maplelife';  //Example
 
 //System
 const TIMEZONE                  =           'America/Lima';
-const TIMEFORTHENEXTVOTE        =           2;  //hours
+const TIMEFORTHENEXTVOTE        =           0.1;  //hours
 const IPCONTROL                 =           true;
 const MIN_LV_REQUERID           =           15;
 //const VERIFY
@@ -45,7 +45,7 @@ class Message{
     public const SELECT_CHAR = '<p class="v-vote_notice">Please, select your character<p>';    
     public const USER_DONT_EXIST = '<p class="v-vote_notice">This is user is not exists<p>';
     public const PLAY_THE_GAME_FIRST = '<p class="v-vote_notice">Please login firts in the game...<p>';
-    public const MIN_LV_REQUERID = '<p class="v-vote_notice">You need a character as a minimum level 15<p>';
+    public const MIN_LV_REQUERID = '<p class="v-vote_notice">You need a character as a minimum level ' . MIN_LV_REQUERID . ' <p>';
     public const DONT_HAVE_CHAR = '<p class="v-config_notice">You dont have a character in the game, please create one</p>';
     public const DEFAULT_CHAR_DONE = '<p class="v-config_done">Done...</p>';
 }
@@ -53,7 +53,7 @@ class Message{
 class Items{
 
     private const PRIZE_1  = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'type'          =>      'continuous',
         'quantity'      =>      [
             array('min' => 0, 'max' => 1),
