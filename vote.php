@@ -73,15 +73,11 @@ class Vote extends DataBase
         date_default_timezone_set(TIMEZONE);
 
         $_current_date  = new DateTime(date("Y-m-d H:i:s"));
-        $_nextDateForVote = new DateTime(date('Y-m-d H:i:s', strtotime($address['last_vote'] . '+'. TIMEFORTHENEXTVOTE .'hour')));                
 
-        $_interval = $_current_date->diff($_nextDateForVote);
-        $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_interval->format("%Y-%M-%D %H:%I:%S") : $_interval->format("%H:%I:%S");
+        $_ip = $this->getIP();
 
-        if($_current_date >= $_nextDateForVote){
-            if(!IPCONTROL) return true;
+        if(IPCONTROL){
             
-            $_ip = $this->getIP();
             $ipInfo = parent::ipReport($_ip);
 
             if($ipInfo['banned'] == 1){
@@ -91,15 +87,25 @@ class Vote extends DataBase
 
             $_nextDateForVoteByIP = new DateTime(date('Y-m-d H:i:s', strtotime($ipInfo['last_vote'] . '+'. TIMEFORTHENEXTVOTE .'hour')));
 
-            if($_current_date >= $_nextDateForVoteByIP) {
-                return $_ip;    //true
-            }else{
+            if($_current_date <= $_nextDateForVoteByIP) {                
                 $_intervalByIP = $_current_date->diff($_nextDateForVoteByIP);
                 $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_intervalByIP->format("%Y-%M-%D %H:%I:%S") : $_intervalByIP->format("%H:%I:%S");
                 $this->prepareInfo(Message::CANTVOTE_BYIP . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');
                 return false;
             }
+
+        }
+
+
+
+        $_nextDateForVote = new DateTime(date('Y-m-d H:i:s', strtotime($address['last_vote'] . '+'. TIMEFORTHENEXTVOTE .'hour')));
+
+        $_interval = $_current_date->diff($_nextDateForVote);
+        $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_interval->format("%Y-%M-%D %H:%I:%S") : $_interval->format("%H:%I:%S");
+
+        if($_current_date >= $_nextDateForVote){
             
+            return $_ip;    //true          
             
         }else{
             $this->prepareInfo(Message::CANTVOTE . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');

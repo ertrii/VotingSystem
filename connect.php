@@ -128,10 +128,7 @@ class DataBase{
             if(!$chars){
                 $this-> db_info = Message::DONT_HAVE_CHAR;
                 return false;
-            }else{                
-                
-                /*$char = $chars[0][0];               //First Character for Default
-                $this -> connect("INSERT INTO voted(id_user, default_id_character) VALUES ($id, '$char')");*/
+            }else{
                 $this -> registerUserInVoteDB($id, $chars[0][0]);
             }
             
@@ -151,7 +148,9 @@ class DataBase{
             return false;
         }
 
-        if($ip && IPCONTROL) $this -> connect("UPDATE ipcontrol SET votes = votes + 1 WHERE ip = '$ip'");
+        if($ip && IPCONTROL){            
+            $this -> connect("UPDATE ipcontrol SET votes = votes + 1 WHERE ip = '$ip'");
+        } 
         
         if(ADDITIONAL_VOTE){
             $update = $this -> connect("UPDATE voted SET votes = votes + 1, vote_additional = vote_additional + 1 WHERE id_user = $id");
