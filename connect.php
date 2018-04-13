@@ -29,7 +29,7 @@ class DataBase{
     }
 
     protected function getCharsUser($_id = null){
-        $id = ($_id === null) ? $_SESSION['id'] : $_id;
+        $id = ($_id === null) ? $_SESSION[SESSION_VARIABLE] : $_id;
         
         $get = $this -> connectMaple("SELECT id, name, level FROM characters WHERE accountid = '$id'");
         $chars = $get-> fetch_all();
@@ -90,7 +90,7 @@ class DataBase{
     }
 
     protected function defaultChar($char){        
-        $id = $_SESSION['id'];
+        $id = $_SESSION[SESSION_VARIABLE];
         $_chars = $this->getCharsUser($id);
 
         //if there is an insertion of -1, it is because there was a manipulation in the configuration form

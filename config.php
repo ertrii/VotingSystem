@@ -1,13 +1,10 @@
 <?php
-
-//Session, testing
-session_start();
-
-$_SESSION['id'] = 6;
-
+/*
+    Voting System
+*/
 //Config DataBase
 
-const VOTING_SYSTEM             =           true;    // on / off
+const VOTING_SYSTEM             =           true;               // on / off
 //HOST
 const HOST                      =           'localhost';
 
@@ -20,14 +17,15 @@ const DB_VOTE                   =           'vote';
 //DATABASE MAPLE
 const DB_MAPLE                  =           'maple_maplelife';  //Example
 
+const SESSION_VARIABLE          =           'id';               //Example, $_SESSION[SESSION_VARIABLE] == $_SESSION['id']
 //System
-const TIMEZONE                  =           'America/Lima';
-const TIMEFORTHENEXTVOTE        =           0.1;  //hours
+const TIMEZONE                  =           'America/Lima';     //http://php.net/manual/es/timezones.php
+const TIMEFORTHENEXTVOTE        =           0.1;                //hours
 const IPCONTROL                 =           true;
 const MIN_LV_REQUERID           =           15;
 //const VERIFY
 
-const ADDITIONAL_VOTE           =           true;
+const ADDITIONAL_VOTE           =           true;               //accumulate(c)
 
 //System Vote
 const VOTE_LINK                 =           'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
@@ -53,12 +51,12 @@ class Message{
 class Items{
 
     private const PRIZE_1  = array(
-        'status'        =>      true,
-        'type'          =>      'continuous',
+        'status'        =>      false,
+        'type'          =>      'continuous',//there are three types: continuos(c), requerid(r), accumulate(a)
         'quantity'      =>      [
-            array('min' => 0, 'max' => 1),
+            3,
             array('min' => 1, 'max' => 1),
-            array('min' => 1, 'max' => 3)
+            5
         ],
         'voteRequerid'  =>      [1, 100, 50, 100, 250, 500, 1000],
         
@@ -74,8 +72,8 @@ class Items{
 
     private const PRIZE_2 = array(
         'status'        =>      false,
-        'quantity'      =>      1,
-        'type'          =>      'c',
+        'type'          =>      'requerid',
+        'quantity'      =>      [1, 5],        
         'voteRequerid'  =>      [9, 50, 100, 198, 500, 1000],
         'item'          =>      array(
     
@@ -89,8 +87,8 @@ class Items{
 
     private const ADDITIONAL_PRIZE = array(
         'status'        =>      false,
-        'quantity'      =>      2,
-        'type'          =>      'c',
+        'type'          =>      'accumulate',
+        'quantity'      =>      2,        
         'voteRequerid'  =>      [17, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
@@ -101,7 +99,7 @@ class Items{
         )
     
     );
-
+    //you can create new items
     public static function get(){
         return [self::PRIZE_1, self::PRIZE_2, self::ADDITIONAL_PRIZE];
     }

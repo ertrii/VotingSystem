@@ -14,7 +14,7 @@ class Vote extends DataBase
 
     function __construct(){        
         
-        if (isset($_SESSION['id'])){
+        if (isset($_SESSION[SESSION_VARIABLE])){
             $_chars =  parent::getCharsUser();
             if (!$_chars){
                 $this -> chars = null;
@@ -123,15 +123,17 @@ class Vote extends DataBase
         $this -> info['reward'] = $_reward;
 
         $div = Message::SUCCESSFUL_VOTE . '<p class="v-total_votes">Total Votes: ' . $this->vote . '</p>';
-
+        //Link: hidden, Delete if you do not want to be redirected automatically.
+        $div .= '<a id="v-link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>';
+        
         if(count($_reward) === 0){
-            return $div .= Message::DONTWINITEMS;
+            $_reward = null;
+            print_r($_reward);
+            $div .= Message::DONTWINITEMS;
         }
         else{
-            parent::setGameItems($_reward, $_idUser);
-            //Link: hidden
-            $div .= '<a id="v-link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>
-            <p class="v-sub_title_items">You got:</p>
+            parent::setGameItems($_reward, $_idUser);            
+            $div .= '<p class="v-sub_title_items">You got:</p>
             <ul class="v-list_items">';
             foreach ($_reward as $prize) {
                 $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
@@ -158,10 +160,10 @@ class Vote extends DataBase
             $_chars .= '<option value="' . $c[1] . '">' . $c[1] . '</option>';
         }
 
-        $_defaultChar = parent::select($_SESSION['id'], 'default_id_character');
+        $_defaultChar = parent::select($_SESSION[SESSION_VARIABLE], 'default_id_character');
         if($_defaultChar === null) {
-            parent::registerUserInVoteDB($_SESSION['id'], $this -> chars[0][0]);            
-            $_defaultChar = parent::select($_SESSION['id'], 'default_id_character');
+            parent::registerUserInVoteDB($_SESSION[SESSION_VARIABLE], $this -> chars[0][0]);            
+            $_defaultChar = parent::select($_SESSION[SESSION_VARIABLE], 'default_id_character');
         }
         $nameChar = parent::getNameChar($_defaultChar);
 
@@ -247,7 +249,7 @@ class Vote extends DataBase
         if (!VOTING_SYSTEM) return null;
         
         //if there is a session, return form_Config
-        if (isset($_SESSION['id'])) {
+        if (isset($_SESSION[SESSION_VARIABLE])) {
             if(isset($_POST['char'])) $this -> configDefaultChar($_POST['char']);
             return $this->formConfig();
         } else{

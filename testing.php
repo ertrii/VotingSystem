@@ -92,6 +92,7 @@ $v = new Vote();
         .col2{
             display: flex;
             justify-content: flex-end;
+            align-items: flex-start;
         }
         .col2 .forms{
             display: flex;
