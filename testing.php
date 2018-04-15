@@ -72,7 +72,24 @@ $v = new Vote();
             width: 50%;
             padding: 2.5em 0;            
         }
-
+        .col3{
+            width: 100%;
+            margin-bottom: 35px;
+        }
+        .v-ranking_table{
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0px 1px 5px -3px black;
+            width: 100%;
+            text-align: left;            
+        }
+        .v-ranking_table td{
+            padding: 3px 5px;
+            font-size: 9pt;
+        }
+        .v-ranking_table tr:nth-child(even){
+            background-color: #FED42A;            
+        }
         .col1 h1{
             font-family: sans-serif;
             padding-bottom: 10px;
@@ -172,7 +189,8 @@ $v = new Vote();
             font-size: 9pt;
         }
         footer{
-            text-align: center;            
+            text-align: center;
+            padding-bottom: 25px;
         }
 
                 @media(max-width: 750px){
@@ -217,7 +235,8 @@ $v = new Vote();
                 <li>Time for the next vote: 1 hour</li>
                 <li>Ip Control: on</li>
                 <li>Min Level Requerid: 15</li>
-                <li>Additional Vote: on</li>                
+                <li>Additional Vote: on</li>
+                <li>Limit Ranking: 5</li>
             </ul>
         </div>
         <div class="col2">
@@ -230,7 +249,13 @@ $v = new Vote();
             </div>
             
         </div>
+
+        <div class="col3">
+        <?php print_r($v -> ranking()); ?>
+        </div>
     </main>
+    
+    
     <footer>
         <p>Voting System by Churano</p>
     </footer>

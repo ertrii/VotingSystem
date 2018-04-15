@@ -191,5 +191,29 @@ class DataBase{
         }
     }
 
-    
+    /*
+    ==================================================
+                === Vote Ranking ===
+    ==================================================
+    */
+    public function ranking(){
+        $rank = $this -> connect("SELECT id_user, votes, start_date, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC LIMIT " . LIMIT_RANKING);
+        $_rank = $rank -> fetch_all();        
+
+        for ($i=0; $i < count($_rank); $i++) { 
+            $_id = $_rank[$i][0];
+            $user = $this -> connectMaple("SELECT name FROM accounts WHERE id = $_id");
+            $_rank[$i][] = $user -> fetch_array()['name'];
+        }
+
+        $ranking_template = '<table class="v-ranking_table"><tr><th>Ranking</th><th>Name</th><th>Votes</th><th>Start Date</th></tr>';
+
+        foreach ($_rank as $_r) {
+            $ranking_template .= "<tr><td>$_r[3]</td> <td>$_r[4]</td> <td>$_r[1]</td> <td>$_r[2]</td></tr>";
+        }
+        $ranking_template .= '</table>';
+        
+        return $ranking_template;
+
+    }
 }

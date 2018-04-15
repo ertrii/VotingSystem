@@ -5,6 +5,8 @@
 //Config DataBase
 
 const VOTING_SYSTEM             =           true;               // on / off
+
+const VOTE_INFO                 =           (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
 //HOST
 const HOST                      =           'localhost';
 
@@ -30,7 +32,7 @@ const ADDITIONAL_VOTE           =           true;               //accumulate(c)
 //System Vote
 const VOTE_LINK                 =           'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
 
-const VOTE_INFO                 =           (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
+const LIMIT_RANKING             =           5;
 
 class Message{
     
