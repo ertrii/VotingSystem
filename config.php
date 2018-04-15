@@ -36,7 +36,7 @@ const LIMIT_RANKING             =           5;
 
 class Message{
     
-    public const SUCCESSFUL_VOTE = '<p class="v-thanks_for_vote">Thank you for the Vote.</p>'; //line 119 vote.php    
+    public const SUCCESSFUL_VOTE = '<p class="v-thanks_for_vote">Thank you for the Vote.</p>'; //line 122 vote.php    
     public const DONTWINITEMS = '<p class="v-not_win_items">Sorry you did not win, try it on the next vote.</p>';
     public const CANTVOTE = '<p class="v-complete_hours">You can not vote until you complete '. TIMEFORTHENEXTVOTE .' hours.</p>';
     public const CANTVOTE_BYIP = '<p class="v-complete_hours">You can not vote here until you complete '. TIMEFORTHENEXTVOTE .' hours.</p>';

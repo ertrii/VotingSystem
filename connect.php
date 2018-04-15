@@ -206,7 +206,7 @@ class DataBase{
             $_rank[$i][] = $user -> fetch_array()['name'];
         }
 
-        $ranking_template = '<table class="v-ranking_table"><tr><th>Ranking</th><th>Name</th><th>Votes</th><th>Start Date</th></tr>';
+        $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th><th>Start Date</th></tr>';
 
         foreach ($_rank as $_r) {
             $ranking_template .= "<tr><td>$_r[3]</td> <td>$_r[4]</td> <td>$_r[1]</td> <td>$_r[2]</td></tr>";

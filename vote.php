@@ -76,8 +76,7 @@ class Vote extends DataBase
 
         $_ip = $this->getIP();
 
-        if(IPCONTROL && $address['ip_control'] == 1){   //ip_control if is true
-            
+        if(IPCONTROL && $address['ip_control'] == 1){   //ip_control if is true            
             $ipInfo = parent::ipReport($_ip);
 
             if($ipInfo['banned'] == 1){
@@ -96,8 +95,6 @@ class Vote extends DataBase
 
         }
 
-
-
         $_nextDateForVote = new DateTime(date('Y-m-d H:i:s', strtotime($address['last_vote'] . '+'. TIMEFORTHENEXTVOTE .'hour')));
 
         $_interval = $_current_date->diff($_nextDateForVote);
@@ -105,7 +102,7 @@ class Vote extends DataBase
 
         if($_current_date >= $_nextDateForVote){
             
-            return $_ip;    //true          
+            return ['ip' => $_ip, 'ip_control' => ($address['ip_control'] == 1) ? true : false];     //true
             
         }else{
             $this->prepareInfo(Message::CANTVOTE . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');
@@ -204,9 +201,9 @@ class Vote extends DataBase
         if(!$cIv){
             return;
         }else{
-            if(IPCONTROL){
+            if(IPCONTROL && $cIv['ip_control']){
 
-                $this->vote = parent::vote($user, $cIv);          //Database Consult and save
+                $this->vote = parent::vote($user, $cIv['ip']);          //Database Consult and save
             }else{
                 $this->vote = parent::vote($user);          //Database Consult and save
             }

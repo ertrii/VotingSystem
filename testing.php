@@ -251,6 +251,7 @@ $v = new Vote();
         </div>
 
         <div class="col3">
+        <h2>Ranking</h2>
         <?php print_r($v -> ranking()); ?>
         </div>
     </main>
