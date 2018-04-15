@@ -232,7 +232,7 @@ $v = new Vote();
         </div>
     </main>
     <footer>
-        <p>Voting System by ertrii/Churano</p>
+        <p>Voting System by Churano</p>
     </footer>
     </div>
     

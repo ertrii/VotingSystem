@@ -54,13 +54,14 @@ class DataBase{
             return false;
         } else{            
             $address['last_vote'] = $this->select($address['id'], 'last_vote');
+            $address['ip_control'] = $this->select($address['id'], 'ip_control');
 
             if ($address['last_vote'] === null){
                 $address['last_vote'] = '2013-05-19 00:00:00';
             }
             
-            foreach ($address as $ipmac) {                
-                if($ipmac === null) {
+            foreach ($address as $add) {                
+                if($add === null) {
                     $this->db_info = Message::PLAY_THE_GAME_FIRST;
                     return false;
                 }
@@ -189,5 +190,6 @@ class DataBase{
             $this-> connectMaple("INSERT INTO inventoryitems(characterid, accountid, itemid, quantity) VALUES($idChar, $idUser, $idItem, $countItem)");
         }
     }
-        
+
+    
 }

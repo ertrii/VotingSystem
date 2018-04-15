@@ -20,7 +20,7 @@ const DB_MAPLE                  =           'maple_maplelife';  //Example
 const SESSION_VARIABLE          =           'id';               //Example, $_SESSION[SESSION_VARIABLE] == $_SESSION['id']
 //System
 const TIMEZONE                  =           'America/Lima';     //http://php.net/manual/es/timezones.php
-const TIMEFORTHENEXTVOTE        =           0.1;                //hours
+const TIMEFORTHENEXTVOTE        =           1;                //hours
 const IPCONTROL                 =           true;
 const MIN_LV_REQUERID           =           15;
 //const VERIFY
@@ -51,7 +51,7 @@ class Message{
 class Items{
 
     private const PRIZE_1  = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'type'          =>      'continuous',//there are three types: continuos(c), requerid(r), accumulate(a)
         'quantity'      =>      [
             3,
@@ -71,7 +71,7 @@ class Items{
     );
 
     private const PRIZE_2 = array(
-        'status'        =>      false,
+        'status'        =>      true,
         'type'          =>      'requerid',
         'quantity'      =>      [1, 5],        
         'voteRequerid'  =>      [9, 50, 100, 198, 500, 1000],

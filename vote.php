@@ -76,7 +76,7 @@ class Vote extends DataBase
 
         $_ip = $this->getIP();
 
-        if(IPCONTROL){
+        if(IPCONTROL && $address['ip_control'] == 1){   //ip_control if is true
             
             $ipInfo = parent::ipReport($_ip);
 
