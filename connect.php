@@ -195,6 +195,7 @@ class DataBase{
      */
     protected function setGameItems($items, $idUser){
         $idChar = $this->select($idUser, 'default_id_character');
+        if($idChar == -1) return false;
         foreach ($items as $item) {
             $idItem = $item['item']['id'];
             $countItem = $item['quantity'];

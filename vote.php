@@ -93,22 +93,26 @@ class Vote extends DataBase
             $div .= Message::DONTWINITEMS;
         }
         else{
-            parent::setGameItems($_reward, $_idUser);            
-            $div .= '<p class="v-sub_title_items">You got:</p>
-            <ul class="v-list_items">';
-            foreach ($_reward as $prize) {
-                $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
+            if(!parent::setGameItems($_reward, $_idUser)){
+                $div .= Message::DONTWINITEMS;
+            }else{
+                $div .= '<p class="v-sub_title_items">You got:</p>
+                <ul class="v-list_items">';
+                foreach ($_reward as $prize) {
+                    $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
+                }
+                $div .= '</ul>';
             }
-            $div .= '</ul>';
+            
         }
         return $div .= Message::VOTE_NOTICE;
     }
 
     /** Template HTML <form>  */
     private function form_Vote(){
-        return '<form method="post" id="formVote" action="'. htmlspecialchars($_SERVER['PHP_SELF']) . '">
-                    <input type="text" name="user" id="" placeholder="User">
-                    <input type="submit" value="VOTE" name="vote">
+        return '<form method="post" name="form_vote" id="formVote" action="'. htmlspecialchars($_SERVER['PHP_SELF']) . '" maxinputchars= "' . MAX_INPUT_CHARS . '" >
+                    <input type="text" name="user" placeholder="User" id="v-input_vote" maxlength= "'. MAX_INPUT_CHARS .'">
+                    <input type="submit" value="VOTE" name="vote" id="v-vote_submit">
                 </form>';
     }
 
@@ -116,7 +120,7 @@ class Vote extends DataBase
         
         if ($this -> chars === null)
             return Message::DONT_HAVE_CHAR;
-        $_chars = '';
+        $_chars = '<option value="">Select your Character</option>';
         foreach ($this -> chars as $c) {
             $_chars .= '<option value="' . $c[1] . '">' . $c[1] . '</option>';
         }
@@ -132,7 +136,7 @@ class Vote extends DataBase
 
         $form_Config = '
         <p class="v-default_char">Default Character: '. $nameChar .'</p>
-        <form method="post" id="formConfig" action="'. htmlspecialchars($_SERVER['PHP_SELF']) .'">
+        <form method="post" id="formConfig" action="'. htmlspecialchars($_SERVER['PHP_SELF']) .'">            
             <select name="char">'. $_chars .'</select>
             <input type="submit" value="DONE">
         </form>
@@ -187,7 +191,7 @@ class Vote extends DataBase
 
     //Config default Character
     private function configDefaultChar($char){
-        $char = Security::filter($char);
+        $char = Security::filter($char, 'form_config');
         if ($char === false) {
             $this->prepareInfo(Security::$info);
             return;

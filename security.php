@@ -56,9 +56,9 @@ class Security{
 
     }
 
-    public static function filter($text){
+    public static function filter($text, $form = false){
         if($text == ''){
-            self::$info = Message::INPUT_TEXT_NULL;
+            self::$info = ($form === 'form_config') ? Message::SELECT_CHAR : Message::INPUT_TEXT_NULL;
             return false;
         }        
         $text = trim($text);
