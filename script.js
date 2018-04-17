@@ -17,36 +17,47 @@
     }, 1000)
 })();
 
-const showMessage = (form, text) => {
-    let p = document.createElement('p');
-    p.setAttribute('class', 'v-vote_notice');
-        let t = document.createTextNode(text);
-    p.appendChild(t);
-    form.appendChild(p);
-}
-
-const validate_form = (e) => {
-
-    let f_vote = document.forms.form_vote;
-    let input_vote = f_vote.user;
-    if(input_vote.value == ''){
-        input_vote.style.border = '1px solid red';
-        showMessage(f_vote, 'Please write your user name');
-        e.preventDefault();
-        return;
+class Validate{
+    constructor(form){
+        this.ev = null;             //event
+        this.f = form;
+        this.element_p = false;
     }
 
-    let max_input_chars = f_vote.attributes.maxinputchars.value
-
-    if(input_vote.value.length > max_input_chars){
-        input_vote.value = '';
-        showMessage(f_vote, 'max character: ' + max_input_chars);        
-        e.preventDefault();
-        return;
+    showMessage(text){            
+        this.ev.preventDefault();
+        if(this.element_p === false){
+            this.element_p = document.createElement('p');
+            this.element_p.setAttribute('class', 'v-vote_notice');
+                let t = document.createTextNode(text);
+            this.element_p.appendChild(t);
+            this.f.appendChild(this.element_p);            
+            
+        }else{
+            this.element_p.innerHTML = text;            
+        }        
     }
 
-    f_vote.submit();
+    form(e){
+        this.ev = e;
 
+        let input_vote = this.f.user;
+        if(input_vote.value == ''){
+            input_vote.style.border = '1px solid red';
+            this.showMessage('Please write your user name');            
+            return;
+        }
+
+        let max_input_chars = this.f.attributes.maxinputchars.value
+
+        if(input_vote.value.length > max_input_chars){
+            input_vote.value = '';
+            this.showMessage('max character: ' + max_input_chars);
+            return;
+        }
+        
+    }
 }
 
-document.getElementById('v-vote_submit').onclick = e => validate_form(e);
+const validate = new Validate(document.forms.form_vote);
+document.getElementById('v-vote_submit').onclick = e => validate.form(e);
