@@ -34,6 +34,8 @@ const VOTE_LINK                 =           'http://www.gtop100.com/topsites/Map
 
 const LIMIT_RANKING             =           5;
 
+const MAX_INPUT_CHARS           =           12;
+
 class Message{
     
     public const SUCCESSFUL_VOTE = '<p class="v-thanks_for_vote">Thank you for the Vote.</p>'; //line 122 vote.php    
@@ -47,7 +49,8 @@ class Message{
     public const PLAY_THE_GAME_FIRST = '<p class="v-vote_notice">Please login firts in the game...<p>';
     public const MIN_LV_REQUERID = '<p class="v-vote_notice">You need a character as a minimum level ' . MIN_LV_REQUERID . ' <p>';
     public const DONT_HAVE_CHAR = '<p class="v-config_notice">You dont have a character in the game, please create one</p>';
-    public const DEFAULT_CHAR_DONE = '<p class="v-config_done">Done...</p>';
+    public const DEFAULT_CHAR_DONE = '<p class="v-config_done">Done...</p>';    
+    public const SECURITY_WARNING = '<p class="v-warning">We found a strange behavior</p>';
 }
 
 class Items{
@@ -107,3 +110,5 @@ class Items{
     }
     
 }
+
+session_start();

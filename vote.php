@@ -2,6 +2,7 @@
 
 //Voting System
 include_once('connect.php');
+include_once("security.php");
 include_once('rewards.php');
 class Vote extends DataBase
 {
@@ -27,43 +28,6 @@ class Vote extends DataBase
         
     }
 
-    public function getIP()
-    {
-       $ip = "";
-       if(isset($_SERVER))
-       {
-           if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
-           {
-               $ip=$_SERVER['HTTP_CLIENT_IP'];
-            }
-            elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-            {
-                $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-            }
-            else
-            {
-                $ip=$_SERVER['REMOTE_ADDR'];
-            }
-       }
-       else
-       {
-            if ( getenv( 'HTTP_CLIENT_IP' ) )
-            {
-                $ip = getenv( 'HTTP_CLIENT_IP' );
-            }
-            elseif( getenv( 'HTTP_X_FORWARDED_FOR' ) )
-            {
-                $ip = getenv( 'HTTP_X_FORWARDED_FOR' );
-            }
-            else
-            {
-                $ip = getenv( 'REMOTE_ADDR' );
-            }
-       }  
-        // En algunos casos muy raros la ip es devuelta repetida dos veces separada por coma
-        return (strstr($ip,',')) ? array_shift(explode(',', $ip)) : $ip;
-    }
-
     private function canIvote($user){
         $address = parent::getAddress($user);        
         if(!$address){
@@ -74,7 +38,7 @@ class Vote extends DataBase
 
         $_current_date  = new DateTime(date("Y-m-d H:i:s"));
 
-        $_ip = $this->getIP();
+        $_ip = Security::IP();  //security.php
 
         if(IPCONTROL && $address['ip_control'] == 1){   //ip_control if is true            
             $ipInfo = parent::ipReport($_ip);
@@ -141,12 +105,12 @@ class Vote extends DataBase
     }
 
     /** Template HTML <form>  */
-    private $form_Vote ='
-        <form method="post" id="formVote">
-            <input type="text" name="user" id="" placeholder="User">
-            <input type="submit" value="VOTE" name="vote">
-        </form>
-        ';
+    private function form_Vote(){
+        return '<form method="post" id="formVote" action="'. htmlspecialchars($_SERVER['PHP_SELF']) . '">
+                    <input type="text" name="user" id="" placeholder="User">
+                    <input type="submit" value="VOTE" name="vote">
+                </form>';
+    }
 
     private function formConfig(){
         
@@ -168,7 +132,7 @@ class Vote extends DataBase
 
         $form_Config = '
         <p class="v-default_char">Default Character: '. $nameChar .'</p>
-        <form method="post" id="formConfig">            
+        <form method="post" id="formConfig" action="'. htmlspecialchars($_SERVER['PHP_SELF']) .'">
             <select name="char">'. $_chars .'</select>
             <input type="submit" value="DONE">
         </form>
@@ -192,41 +156,42 @@ class Vote extends DataBase
     
     //Start Vote
     private function start($user){
-                
-        if ($user == ''){            
-            $this->prepareInfo(Message::INPUT_TEXT_NULL);
+
+        $_user = Security::filter($user);
+        if($_user === false) {
+            $this->prepareInfo(Security::$info);
             return;
         }
-        $cIv = $this->canIvote($user);
+        
+        $cIv = $this->canIvote($_user);
         if(!$cIv){
             return;
         }else{
             if(IPCONTROL && $cIv['ip_control']){
 
-                $this->vote = parent::vote($user, $cIv['ip']);          //Database Consult and save
+                $this->vote = parent::vote($_user, $cIv['ip']);          //Database Consult and save
             }else{
-                $this->vote = parent::vote($user);          //Database Consult and save
+                $this->vote = parent::vote($_user);          //Database Consult and save
             }
         }
         
-        
-
         if (!$this -> vote) {            
             //false
             $this->prepareInfo($this->db_info, 0);
         }else{
             //succsess            
-            $this->prepareInfo($this -> reward($user), 1);
+            $this->prepareInfo($this -> reward($_user), 1);
         }        
         
     }
 
     //Config default Character
     private function configDefaultChar($char){
-        if ($char == '') {
-            $this->prepareInfo(Message::SELECT_CHAR);
+        $char = Security::filter($char);
+        if ($char === false) {
+            $this->prepareInfo(Security::$info);
             return;
-        }        
+        }
         
         parent::defaultChar($char);
         $this->prepareInfo(Message::DEFAULT_CHAR_DONE , 1);
@@ -236,7 +201,7 @@ class Vote extends DataBase
     public function getForm_Vote(){                
         if (VOTING_SYSTEM) {
             if(isset($_POST['vote'])) $this -> start($_POST['user']);
-            return $this->form_Vote;
+            return $this->form_Vote();
         }else{
             return VOTE_INFO;
         }        

@@ -236,7 +236,7 @@ $v = new Vote();
                 <li>Ip Control: on</li>
                 <li>Min Level Requerid: 15</li>
                 <li>Additional Vote: on</li>
-                <li>Limit Ranking: 5</li>
+                <li>Limit Ranking: 5</li>                
             </ul>
         </div>
         <div class="col2">
@@ -251,8 +251,8 @@ $v = new Vote();
         </div>
 
         <div class="col3">
-        <h2>Ranking</h2>
-        <?php print_r($v -> ranking()); ?>
+            <h2>Ranking</h2>            
+            <?php echo $v -> ranking(); ?>
         </div>
     </main>
     

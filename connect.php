@@ -8,6 +8,7 @@ class DataBase{
     
     //=== Database Maple ===
     protected $db_info = '';
+   
 
     protected function connectMaple($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_MAPLE);
@@ -16,12 +17,13 @@ class DataBase{
 			echo "Error";
 			exit();
 		}else{
-			//self->$msg = 'conexion establecida...';
+            //self->$msg = 'conexion establecida...';            
 			return $dB->query($query);
 			
 		}
 
     }
+
     protected function consultIdUser($user){
         $consult = $this -> connectMaple("SELECT id FROM accounts WHERE name = '$user'");
         $id = $consult-> fetch_array();
@@ -72,17 +74,26 @@ class DataBase{
 
     //=======================================//
     //          === Database Vote ===
-    protected function connect($query){
+    private $conDB;
+
+    public function connect($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_VOTE);
 
 		if ($dB->connect_errno) {
 			echo "Error";
 			exit();
-		}else{			
+		}else{
+            $this->conDB = $dB;
 			return $dB->query($query);			
 		}
     }    
-
+    public function close_DB(){
+        $this->conDB->close();
+    }
+    public function escape_string($string){
+        $str = mysqli_real_escape_string(new mysqli(HOST, DB_USER, DB_PASS, DB_VOTE), $string);
+        return $str;
+    }
     //=== Table Vote ===    
     protected function select($id, $row){
         $select = $this -> connect("SELECT $row FROM voted WHERE id_user = '$id' ");
