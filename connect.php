@@ -255,9 +255,7 @@ class DataBase{
             $_rankUser = $rankUser -> fetch_array();
 
             $user_position = ($_rankUser[0] == null) ? 0 : $_rankUser[0] ;
-        }        
-                
+        }
         return ['table' => $ranking_template, 'user' => (isset($_SESSION[SESSION_VARIABLE])) ? '<span class="v-user_ranking"> Your Position: ' . $user_position . '</span>': '' ];
-
     }
 }

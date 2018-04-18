@@ -40,11 +40,11 @@ const MAX_INPUT_CHARS                   =           12;
 
 class Message{
     
-    public const SUCCESSFUL_VOTE = '<p class="v-success">Thank you for the Vote.</p>'; //line 85 vote.php    
+    public const SUCCESSFUL_VOTE = '<p class="v-success">Thank you for the Vote.</p>'; //line 98, vote.php
     public const DONTWINITEMS = '<p class="v-info">Sorry you did not win, try it on the next vote f7.</p>';
     public const CANTVOTE = '<p class="v-info">You can not vote until you complete '. TIMEFORTHENEXTVOTE .' hours.</p>';
     public const CANTVOTE_BYIP = '<p class="v-info">You can not vote here until you complete '. TIMEFORTHENEXTVOTE .' hours.</p>';
-    public const VOTE_NOTICE = '<p class="v-alert">You will be directed to gtop100 in <span id="v-count_time">5</span> seconds...</p>';//line 108 and check line 88
+    public const VOTE_NOTICE = '<p class="v-alert">You will be directed to gtop100 in <span id="v-count_time">5</span> seconds...</p>';//line 111 and check line 101, vote.php
     public const INPUT_TEXT_NULL = '<p class="v-info">Please, write your username<p>';//line 61 security.php, check line 47 and 55 script.js
     public const SELECT_CHAR = '<p class="v-info">Please, select your character<p>';
     public const USER_DONT_EXIST = '<p class="v-alert">This is user is not exists<p>';
@@ -56,6 +56,8 @@ class Message{
 }
 
 class Items{
+    
+    public const DIRECTORY = 'img/';//line 87 vote.php
 
     private const PRIZE_1  = array(
         'status'        =>      true,
@@ -69,9 +71,9 @@ class Items{
         
         'item'          =>      array(
     
-            'id'            =>      84565465,
-            'name'          =>      'gachapom',
-            'img'           =>      'gacha.png'
+            'id'            =>      5220000,
+            'name'          =>      'Gachapon Ticket',//iitem example
+            'img'           =>      '5220000.png'
     
         )
             
@@ -84,9 +86,9 @@ class Items{
         'voteRequerid'  =>      [9, 50, 100, 198, 500, 1000],
         'item'          =>      array(
     
-            'id'            =>      123456789,
-            'name'          =>      'medall',
-            'img'           =>      'medall.jpg'
+            'id'            =>      1142077,
+            'name'          =>      'Absolute Victory Carnivalian Medal',//iitem example
+            'img'           =>      '1142077.png'
     
         )
     
@@ -95,13 +97,13 @@ class Items{
     private const ADDITIONAL_PRIZE = array(
         'status'        =>      false,
         'type'          =>      'accumulate',
-        'quantity'      =>      2,        
+        'quantity'      =>      2,
         'voteRequerid'  =>      [17, 50, 100, 250, 500, 1000],
         'item'          =>      array(
     
-            'id'            =>      15510987,
-            'name'          =>      'weapom',
-            'img'           =>      'img.jpg'
+            'id'            =>      1122007,
+            'name'          =>      "Spiegelmann's Necklace",//iitem example
+            'img'           =>      '1122007.png'
     
         )
     

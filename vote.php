@@ -84,7 +84,7 @@ class Vote extends DataBase
             $this -> items = '<p class="v-sub_title_items">You got:</p>
             <ul class="v-list_items">';
             foreach ($_reward as $prize) {
-                $this -> items .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
+                $this -> items .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '<img src="' . Items::DIRECTORY . $prize['item']['img'] . '">' . '</li>';
             }
             $this -> items .= '</ul>';
         }
