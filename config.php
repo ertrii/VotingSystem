@@ -114,3 +114,4 @@ class Items{
 }
 
 session_start();
+$_SESSION[SESSION_VARIABLE] = 3;

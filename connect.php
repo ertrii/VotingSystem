@@ -214,7 +214,7 @@ class DataBase{
     ==================================================
     */
     public function ranking(){
-        $rank = $this -> connect("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC LIMIT " . RANK_TABLE_ROWS);
+        $rank = $this -> connect("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC, start_date ASC LIMIT " . RANK_TABLE_ROWS);
         $_rank = $rank -> fetch_all();
 
         for ($i=0; $i < count($_rank); $i++) { 
@@ -244,14 +244,18 @@ class DataBase{
             }else{                
                 $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2]</td></tr>";
             }
-            
-            if(isset($_SESSION[SESSION_VARIABLE])) {
-                if($_SESSION[SESSION_VARIABLE] == $_r[0] && $user_position == 0) {
-                    $user_position = $_r[4];
-                }
-            }
+                        
         }
+
         $ranking_template .= '</table>';
+
+        if(isset($_SESSION[SESSION_VARIABLE])) {
+            $id_user = $_SESSION[SESSION_VARIABLE];
+            $rankUser = $this -> connect("SELECT 1 + (SELECT COUNT(*) FROM voted a WHERE a.votes > b.votes) AS rank FROM voted b WHERE id_user = $id_user ORDER BY rank, start_date LIMIT 1");
+            $_rankUser = $rankUser -> fetch_array();
+
+            $user_position = ($_rankUser[0] == null) ? 0 : $_rankUser[0] ;
+        }        
                 
         return ['table' => $ranking_template, 'user' => (isset($_SESSION[SESSION_VARIABLE])) ? '<span class="v-user_ranking"> Your Position: ' . $user_position . '</span>': '' ];
 
