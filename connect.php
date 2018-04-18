@@ -214,7 +214,7 @@ class DataBase{
     ==================================================
     */
     public function ranking(){
-        $rank = $this -> connect("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC LIMIT " . LIMIT_RANKING);
+        $rank = $this -> connect("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC LIMIT " . RANK_TABLE_ROWS);
         $_rank = $rank -> fetch_all();
 
         for ($i=0; $i < count($_rank); $i++) { 
@@ -223,11 +223,28 @@ class DataBase{
             $_rank[$i][] = $user -> fetch_array()['name'];//adding
         }
         $user_position = 0;
-
-        $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th><th>Start Date</th></tr>';
+        
+        if(RANK_TABLE_COL_START_DATE && RANK_TABLE_COL_VOTE_ADDITIONAL){
+            $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th><th>Vote Additional</th><th>Start Date</th></tr>';
+        }elseif(RANK_TABLE_COL_START_DATE){
+            $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th><th>Start Date</th></tr>';
+        }elseif(RANK_TABLE_COL_VOTE_ADDITIONAL){
+            $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th><th>Vote Additional</th></tr>';
+        }else{
+            $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th></tr>';
+        }
 
         foreach ($_rank as $_r) {
-            $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2]</td> <td>$_r[1]</td></tr>";
+            if(RANK_TABLE_COL_START_DATE && RANK_TABLE_COL_VOTE_ADDITIONAL){                
+                $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2] </td> <td>$_r[3]</td> <td>$_r[1]</td></tr>";
+            }elseif(RANK_TABLE_COL_START_DATE){                
+                $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2]</td> <td>$_r[1]</td></tr>";
+            }elseif(RANK_TABLE_COL_VOTE_ADDITIONAL){                
+                $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2]</td> <td>$_r[3]</td></tr>";
+            }else{                
+                $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2]</td></tr>";
+            }
+            
             if(isset($_SESSION[SESSION_VARIABLE])) {
                 if($_SESSION[SESSION_VARIABLE] == $_r[0] && $user_position == 0) {
                     $user_position = $_r[4];

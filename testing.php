@@ -255,14 +255,12 @@ $rank = $v -> ranking();
             <?=$rank['table']?>
         </div>
     </main>
-    
-    
+        
     <footer>
         <p>Voting System by Churano</p>
     </footer>
     </div>
     
-
     <script src="script.js"></script>    
 </body>
 </html>

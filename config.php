@@ -4,37 +4,39 @@
 */
 //Config DataBase
 
-const VOTING_SYSTEM             =           true;               // on / off
+const VOTING_SYSTEM                     =           true;               // on / off
 
-const VOTE_INFO                 =           (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
+const VOTE_INFO                         =           (VOTING_SYSTEM) ? 'try the new voting system' : 'voting system in maintenance...';
 //HOST
-const HOST                      =           'localhost';
+const HOST                              =           'localhost';
 
 //USER DATABASE
-const DB_USER                   =           'root';
-const DB_PASS                   =           '';
+const DB_USER                           =           'root';
+const DB_PASS                           =           '';
 
 //DATABASE VOTE
-const DB_VOTE                   =           'vote';
+const DB_VOTE                           =           'vote';
 //DATABASE MAPLE
-const DB_MAPLE                  =           'maple_maplelife';  //Example
+const DB_MAPLE                          =           'maple_maplelife';  //Example
 
-const SESSION_VARIABLE          =           'id';               //Example, $_SESSION[SESSION_VARIABLE] == $_SESSION['id']
+const SESSION_VARIABLE                  =           'id';               //Example, $_SESSION[SESSION_VARIABLE] == $_SESSION['id']
 //System
-const TIMEZONE                  =           'America/Lima';     //http://php.net/manual/es/timezones.php
-const TIMEFORTHENEXTVOTE        =           1;                //hours
-const IPCONTROL                 =           true;
-const MIN_LV_REQUERID           =           15;
+const TIMEZONE                          =           'America/Lima';     //http://php.net/manual/es/timezones.php
+const TIMEFORTHENEXTVOTE                =           1;                //hours
+const IPCONTROL                         =           true;
+const MIN_LV_REQUERID                   =           15;
 //const VERIFY
 
-const ADDITIONAL_VOTE           =           true;               //accumulate(c)
+const ADDITIONAL_VOTE                   =           true;               //(int), accumulate(c)
 
 //System Vote
-const VOTE_LINK                 =           'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
+const VOTE_LINK                         =           'http://www.gtop100.com/topsites/MapleStory/sitedetails/MapleRoyals-The-Nostalgic-MapleStory-Server-79510?vote=1';
 
-const LIMIT_RANKING             =           5;
+const RANK_TABLE_ROWS                   =           5;//int
+const RANK_TABLE_COL_START_DATE         =           true;//boilean
+const RANK_TABLE_COL_VOTE_ADDITIONAL    =           false;//boolean
 
-const MAX_INPUT_CHARS           =           12;
+const MAX_INPUT_CHARS                   =           12;
 
 class Message{
     
