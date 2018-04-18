@@ -14,12 +14,11 @@ $vote = new Vote();
 <body>
     <!-- Print form_Vote -->
     <?= $vote -> getForm_Vote()?>    
-    <?= $vote -> info['formVote']['text'] ?>
+    <?= $vote -> info['formVote']?>
     <!--  if there is a session, print form_Config  -->    
     <?= $vote -> getForm_Config()?>
-    <?= $vote -> info['formConfig']['text'] ?>
-    <p>hola</p>
-    <p><?= trim('          hola2 ') ?></p>
+    <?= $vote -> info['formConfig']?>
+    
     <script src="script.js"></script>
 </body>
 </html>

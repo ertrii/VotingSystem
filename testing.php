@@ -242,10 +242,11 @@ $v = new Vote();
         <div class="col2">
             <div class="forms">
             <?= $v -> getForm_Vote()?>
-            <?= $v -> info['formVote']['text'] ?>
+            <?= $v -> info['formVote']?>
+            <?= $v -> items ?>
             <!--  if there is a session, print form_Config  -->    
             <?= $v -> getForm_Config()?>
-            <?= $v -> info['formConfig']['text'] ?>
+            <?= $v -> info['formConfig']?>
             </div>
             
         </div>

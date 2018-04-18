@@ -193,14 +193,19 @@ class DataBase{
         === Insert Items by vote in MapleStory Game ===
     ====================================================
      */
-    protected function setGameItems($items, $idUser){
-        $idChar = $this->select($idUser, 'default_id_character');
-        if($idChar == -1) return false;
+    protected function setGameItems($idUser, $items){
+        $idChar = $this->select($idUser, 'default_id_character');        
+        if($idChar == -1){
+            return false;
+        }
+        $countItem = 0;        
         foreach ($items as $item) {
+            $countItem++;
             $idItem = $item['item']['id'];
             $countItem = $item['quantity'];
             $this-> connectMaple("INSERT INTO inventoryitems(characterid, accountid, itemid, quantity) VALUES($idChar, $idUser, $idItem, $countItem)");
         }
+        return ($countItem > 0) ? true : false;
     }
 
     /*

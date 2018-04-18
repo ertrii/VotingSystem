@@ -9,9 +9,8 @@ class Vote extends DataBase
     private $chars = null;
     //info about vote
     public $info = array(
-        'formVote' => array('text' => '', 'status' => 0),
-        'formConfig' => array('text' => '', 'status' => 0),
-        'reward' => null);
+        'formVote' => '',
+        'formConfig' => '');
 
     function __construct(){        
         
@@ -74,16 +73,30 @@ class Vote extends DataBase
         }
     }
     
-    private $vote = 0;        
+    private $vote = 0;
+    public $items = '';
 
+    private function prepareItemsWon($_idUser, $_reward){
+        
+        if(!parent::setGameItems($_idUser, $_reward)){
+            $this -> items = Message::DONTWINITEMS;
+        }else{
+            $this -> items = '<p class="v-sub_title_items">You got:</p>
+            <ul class="v-list_items">';
+            foreach ($_reward as $prize) {
+                $this -> items .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
+            }
+            $this -> items .= '</ul>';
+        }
+    }
     //Reward after the vote
     private function reward($user){        
         $_idUser = parent::consultIdUser($user);
         $r = new Reward($this->vote, $_idUser);
         $_reward = $r->get();
-        $this -> info['reward'] = $_reward;
-
+        
         $div = Message::SUCCESSFUL_VOTE . '<p class="v-total_votes">Total Votes: ' . $this->vote . '</p>';
+
         //Link: hidden, Delete if you do not want to be redirected automatically.
         $div .= '<a id="v-link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>';
         
@@ -93,17 +106,7 @@ class Vote extends DataBase
             $div .= Message::DONTWINITEMS;
         }
         else{
-            if(!parent::setGameItems($_reward, $_idUser)){
-                $div .= Message::DONTWINITEMS;
-            }else{
-                $div .= '<p class="v-sub_title_items">You got:</p>
-                <ul class="v-list_items">';
-                foreach ($_reward as $prize) {
-                    $div .= '<li> ' . $prize['quantity'] . " " . $prize['item']['name'] . '</li>';
-                }
-                $div .= '</ul>';
-            }
-            
+            $this -> prepareItemsWon($_idUser, $_reward);
         }
         return $div .= Message::VOTE_NOTICE;
     }
@@ -145,7 +148,7 @@ class Vote extends DataBase
         return $form_Config;
     }
 
-    private function prepareInfo($text, $status = 0){
+    private function prepareInfo($text){
         $post = '';
         if(isset($_POST['vote'])){
             $post = 'formVote';
@@ -153,9 +156,8 @@ class Vote extends DataBase
         if(isset($_POST['char'])){
             $post = 'formConfig';
         }
-        $this -> info[$post]['text'] = $text;
-        
-        $this -> info[$post]['status'] = $status;          // 0 = False / 1 = true        
+        $this -> info[$post] = $text;
+                
     }
     
     //Start Vote
@@ -181,10 +183,10 @@ class Vote extends DataBase
         
         if (!$this -> vote) {            
             //false
-            $this->prepareInfo($this->db_info, 0);
+            $this->prepareInfo($this->db_info);
         }else{
             //succsess            
-            $this->prepareInfo($this -> reward($_user), 1);
+            $this->prepareInfo($this -> reward($_user));
         }        
         
     }
@@ -198,7 +200,7 @@ class Vote extends DataBase
         }
         
         parent::defaultChar($char);
-        $this->prepareInfo(Message::DEFAULT_CHAR_DONE , 1);
+        $this->prepareInfo(Message::DEFAULT_CHAR_DONE);
     }
 
     //Get form templates

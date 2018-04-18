@@ -44,7 +44,7 @@ class Validate{
         let input_vote = this.f.user;
         if(input_vote.value == ''){
             input_vote.style.border = '1px solid red';
-            this.showMessage('Please write your user name');            
+            this.showMessage('Please write your username');
             return;
         }
 
