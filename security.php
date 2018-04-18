@@ -81,7 +81,7 @@ class Security{
 
         $_text = trim($text, "\x00..\x1F");
 
-        return strip_tags($text);        
+        return strip_tags($text);//http://php.net/manual/en/function.strip-tags.php
         
     }
 

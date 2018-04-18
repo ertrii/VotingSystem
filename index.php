@@ -13,10 +13,10 @@ $vote = new Vote();
 </head>
 <body>
     <!-- Print form_Vote -->
-    <?= $vote -> getForm_Vote()?>    
+    <?= $vote -> getFormVote()?>
     <?= $vote -> info['formVote']?>
     <!--  if there is a session, print form_Config  -->    
-    <?= $vote -> getForm_Config()?>
+    <?= $vote -> getFormConfig()?>
     <?= $vote -> info['formConfig']?>
     
     <script src="script.js"></script>

@@ -162,7 +162,7 @@ class Vote extends DataBase
     
     //Start Vote
     private function start($user){
-
+        //$user = strtolower($user);//http://php.net/manual/en/function.strtolower.php , activate if necessary
         $_user = Security::filter($user);
         if($_user === false) {
             $this->prepareInfo(Security::$info);
@@ -204,7 +204,7 @@ class Vote extends DataBase
     }
 
     //Get form templates
-    public function getForm_Vote(){                
+    public function getFormVote(){                
         if (VOTING_SYSTEM) {
             if(isset($_POST['vote'])) $this -> start($_POST['user']);
             return $this->form_Vote();
@@ -213,7 +213,7 @@ class Vote extends DataBase
         }        
     }
 
-    public function getForm_Config(){
+    public function getFormConfig(){
         if (!VOTING_SYSTEM) return null;
         
         //if there is a session, return form_Config

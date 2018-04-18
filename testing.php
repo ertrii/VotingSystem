@@ -240,11 +240,11 @@ $rank = $v -> ranking();
         </div>
         <div class="col2">
             <div class="forms">
-            <?= $v -> getForm_Vote()?>
+            <?= $v -> getFormVote()?>
             <?= $v -> info['formVote']?>
             <?= $v -> items ?>
             <!--  if there is a session, print form_Config  -->    
-            <?= $v -> getForm_Config()?>
+            <?= $v -> getFormConfig()?>
             <?= $v -> info['formConfig']?>
             </div>
             
