@@ -214,23 +214,29 @@ class DataBase{
     ==================================================
     */
     public function ranking(){
-        $rank = $this -> connect("SELECT id_user, votes, start_date, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC LIMIT " . LIMIT_RANKING);
-        $_rank = $rank -> fetch_all();        
+        $rank = $this -> connect("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC LIMIT " . LIMIT_RANKING);
+        $_rank = $rank -> fetch_all();
 
         for ($i=0; $i < count($_rank); $i++) { 
             $_id = $_rank[$i][0];
             $user = $this -> connectMaple("SELECT name FROM accounts WHERE id = $_id");
-            $_rank[$i][] = $user -> fetch_array()['name'];
+            $_rank[$i][] = $user -> fetch_array()['name'];//adding
         }
+        $user_position = 0;
 
         $ranking_template = '<table class="v-ranking_table"><tr><th>Top</th><th>Name</th><th>Votes</th><th>Start Date</th></tr>';
 
         foreach ($_rank as $_r) {
-            $ranking_template .= "<tr><td>$_r[3]</td> <td>$_r[4]</td> <td>$_r[1]</td> <td>$_r[2]</td></tr>";
+            $ranking_template .= "<tr><td>$_r[4]</td> <td>$_r[5]</td> <td>$_r[2]</td> <td>$_r[1]</td></tr>";
+            if(isset($_SESSION[SESSION_VARIABLE])) {
+                if($_SESSION[SESSION_VARIABLE] == $_r[0] && $user_position == 0) {
+                    $user_position = $_r[4];
+                }
+            }
         }
         $ranking_template .= '</table>';
-        
-        return $ranking_template;
+                
+        return ['table' => $ranking_template, 'user' => (isset($_SESSION[SESSION_VARIABLE])) ? '<span class="v-user_ranking"> Your Position: ' . $user_position . '</span>': '' ];
 
     }
 }

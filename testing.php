@@ -2,6 +2,7 @@
 include_once "vote.php";
 
 $v = new Vote();
+$rank = $v -> ranking();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,6 +77,10 @@ $v = new Vote();
             width: 100%;
             margin-bottom: 35px;
         }
+        .v-user_ranking{
+            font-size: 9pt;            
+            font-family: sans-serif;
+        }
         .v-ranking_table{
             background-color: white;
             padding: 15px;
@@ -126,54 +131,52 @@ $v = new Vote();
         }
         input[type="text"]{
             text-align: center;            
-            background-color: #f1f1f1;            
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
         }
         input[type="submit"]{
             background-color: #FED42A;
-        }
-        .col2 #formVote{
-            margin-bottom: 1em;
-        }
+            cursor: pointer;
+        }        
         
         .col2 p{
             font-family: sans-serif;
             padding-bottom: 5px;            
         }
-        .col2 .v-not_win_items{
-            color: #F5532C;
-            font-size: 10pt;
-        }
-        .col2 .v-thanks_for_vote{            
+        .v-info{
+            font-size: 9pt;
+            color: steelblue;
+            padding-top: 2px;
+            text-align: center;
+        }        
+        .v-success{
             font-weight: bold;
             color: #FED42A;
             font-size: 12pt;
         }
-        .col2 .v-total_votes{
-            font-size: 9pt;
+        .v-warning{
+            color: red;
         }
-        .col2 .v-sub_title_items{
-            padding-top: 5px;            
-        }
-        .col2 .v-list_items{            
-            padding-left: 17px;
-        }
-        .col2 .v-vote_notice{
+        .v-alert{
             padding-top: 5px;
             font-size: 9pt;
         }
 
-        .col2 .v-default_char{
-            padding-top: 1.5em;
-            font-size: 10pt;
-        }
-        .col2 .v-vote_notice{
+        .v-total_votes{
             font-size: 9pt;
         }
-        .col2 .v-config_notice{
-            font-size: 11pt;
-            color: #F5532C;
+        .v-sub_title_items{
+            padding-top: 5px;            
         }
-        .col2 .v-remaining_time{
+        .v-list_items{            
+            padding-left: 17px;
+        }
+
+        .v-default_char{
+            padding-top: 1.5em;
+            font-size: 10pt;
+        }        
+        .v-remaining_time{
             font-size: 9pt;
             color: #F5532C;
         }
@@ -183,11 +186,7 @@ $v = new Vote();
             padding: 7px 5px;
             border: none;
             margin-bottom: 5px;
-        }
-        .v-config_done{
-            padding-top: 2px;
-            font-size: 9pt;
-        }
+        }        
         footer{
             text-align: center;
             padding-bottom: 25px;
@@ -252,8 +251,8 @@ $v = new Vote();
         </div>
 
         <div class="col3">
-            <h2>Ranking</h2>            
-            <?php echo $v -> ranking(); ?>
+            <h2>Ranking: <?=$rank['user']?></h2>
+            <?=$rank['table']?>
         </div>
     </main>
     

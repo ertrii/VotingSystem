@@ -28,7 +28,7 @@ class Validate{
         this.ev.preventDefault();
         if(this.element_p === false){
             this.element_p = document.createElement('p');
-            this.element_p.setAttribute('class', 'v-vote_notice');
+            this.element_p.setAttribute('class', 'v-info');
                 let t = document.createTextNode(text);
             this.element_p.appendChild(t);
             this.f.appendChild(this.element_p);            
