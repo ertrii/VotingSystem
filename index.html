@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome</title>
+    <style>
+        *, *:before, *:after {
+	        -webkit-box-sizing: border-box;
+	        -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            color: #403E3E;
+        }
+        pre{
+            background-color: #403E3E;
+            color: white;
+        }
+        ::selection{
+            background-color: #00B161;
+            color: white;
+        }    
+        header{
+            width: 100%;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        header h1, header p{
+            padding-bottom: 25px;
+        }
+        span{
+            font-size: 9pt;
+            color: white;
+            background-color: #403E3E;
+            padding: 2px 5px;
+        }
+        header h1{
+            color: #00B161;
+            font-family: sans-serif;
+            font-size: 2.5em;            
+        }
+        header p{
+            text-align: center;            
+        }
+        .buttoms{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn_template, .btn_testing, .btn_github, .btn_twitter{
+            text-decoration: none;
+            padding: 10px 0;
+            width: 150px;
+            text-align: center;
+            display: inline-block;
+            font-size: 1em;
+            font-family: sans-serif;
+            font-weight: bold;
+            color: white;
+            margin: 15px 12px;
+        }
+        .btn_template, .btn_github{
+            background: #403E3E;            
+        }
+        .btn_testing, .btn_twitter{
+            background: #00B161;            
+        }
+
+        .introduction, .documentation{
+            padding: 50px 15px;
+        }        
+        .introduction{
+            background: #403E3E;
+            color: white;
+        }
+        .documentation{
+            background-color: #F1F1F1;
+        }
+        .introduction article, .documentation article{
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            justify-content: center;            
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .introduction h2{
+            padding-bottom: 1em;
+        }
+        article h2{
+            font-size: 2em;
+            letter-spacing: 2px;            
+            text-decoration: underline;
+        }        
+        article h3{
+            padding-top: 1em;
+            padding-bottom: 0.2em;
+            color: #00B161;
+            font-size: 1.5em;
+            
+        }
+        article p, article li{
+            font-family: sans-serif;
+            line-height: 1.2em;            
+            padding-bottom: 1em;
+            font-size: 11pt;
+        }
+        article ul{
+            padding-left: 20px;
+        }
+        article ul li{
+            font-size: 10pt;
+        }
+        footer{
+            text-align: center;
+            padding: 25px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Voting System<span> vs. 1.0</span></h1>
+            <p>Pensado para mejorar la experiencia del usuario (jugador) de cualquier servidor de MapleStory y eliminar los típicos votos a cambio de nx(cash)</p>
+            <div class="buttoms">
+                <a href="template.php" class="btn_template">TEMPLATE</a>
+                <a href="testing.php" class="btn_testing">TESTING</a>
+            </div>            
+        </header>
+        <section class="introduction">
+            <article>
+                <h2>Introdución.</h2>
+                <p>Gracias por su interéz. Estoy seguro que le será de mucha ayuda.</p>                
+                <p>El objetivo de esto es que los usuarios obtengan nx por otros medios y que se vuelva un reto. Esto se desarrollo con la idea de que obtengan nx por ciertos mobs para aumentar la actividad en mapas que ocupan ellos como sleepywood, hablo en caso de versiones bajas.</p>
+                <p>Este sistema no reducirá la actividad de votos ya que esto se diseño pensando en estos detalles tambien. No se preocupe...</p>
+                <p>Los usuarios pueden recibir a cambio por los votos otros premios escogidos por los miembros del staff. No sería genial que un usuario antiguo gane por ejemplo una medalla como reconocimiento por haber logrado acumular tantos votos. Sería genial.</p>
+            </article>
+        </section>
+        <section class="documentation">
+            <article>
+                <h2>Documentation<span>beta</span></h2>
+                <h3>Requerimiento.</h3>
+                <ul>
+                    <li>Apache, php 5.5, mysql</li>
+                    <li>Base de Datos del servidor para obtener datos necesarios para el sistema</li>
+                </ul>
+                <h3>Detalles</h3>
+                <ul>
+                    <li>Para realizar un voto sin afectar al otro en un hogar usted tendrá que editar el campo ip_control a 0 en la tabla votes. Esto causará que no registre la ip.</li>
+                    <li>La function setGameItems de connect.php, line 196, no está del todo probado debido a la falta de testing en el juego.</li>
+                    <li>Para las sesiones, el sistema necesitará tomar la id del usuario de la base de datos del juego</li>
+                    <li>Los Items se agregaran al primer character de su cuenta. En caso de que no exista le pedirá que se cree uno. Si desea que los items ganados vaya al otro character de su cuenta tendrá que iniciar sessión para activar las configuraciones de vote.</li>
+                </ul>
+                <h3>Configuration</h3>
+                <p>En el archivo config.php existen muchas opciones (const):</p>
+                <ul>
+                    <li><strong>Voting System (boolean)</strong>, Activar o desactivar el sistema</li>
+                    <li><strong>Vote Info (boolean)</strong>, si el sistema esta desactivado mostrará un mensaje de mantenimiento.</li>
+                    <li><strong>Host (string)</strong>.</li>
+                    <li><strong>DB_user (string)</strong>, nombre de usuario.</li>
+                    <li><strong>DB_pass (string)</strong>, password.</li>
+                    <li><strong>DB_vote (string)</strong>, nombre de la base de datos del voting system.</li>
+                    <li><strong>DB_maple (string)</strong>, nombre de la base de datos de su servidor.</li>
+                    <li><strong>Session Variable (string)</strong>, nombre de la variable de $_SESSION</li>
+                    <li><strong>Timezone (string)</strong>, <a href="http://php.net/manual/es/timezones.php" target="_blank">http://php.net/manual/es/timezones.php</a></li>
+                    <li><strong>Time for the next vote (int)</strong>, hora para el siguiente voto.</li>
+                    <li><strong>Ip Control (boolean)</strong>, registro de ip. para un voto en solo un hogar.</li>
+                    <li><strong>Minimo Level Requerid (int)</strong>, basta con un char/li>
+                    <li><strong>Additional Vote (boolean)</strong>, en caso de que desees que el usuario acumule votos aparte de los votos totales. Esto es para Items type accumulate(a).</li>
+                    <li><strong>Vote Link (string)</strong>, link de la página a donde se redirigirá despues del voto.</li>
+                    <li><strong>RANK_TABLE_ROWS(int)</strong>, columnas del ranking.</li>
+                    <li><strong>RANK_TABLE_COL_START_DATE (boolean)</strong>, mostrar campo start_date</li>
+                    <li><strong>RANK_TABLE_COL_VOTE_ADDITIONAL (boolean)</strong>, mostrar campo vote_additional</li>
+                    <li><strong>Message</strong>, Atención con <strong>Vote_Notice</strong>, existe una etiqueta span con una id, “v-count_time”, este es tomado por un script para realizar dicho conteo para luego redireccionar, si usted no lo desea puede eliminar, line 101, vote.php.</li>
+                </ul>
+                <h3>Item</h3>
+                <p>Los Items se les conoce como premios(PRIZE), usted puede editarlos o eliminarlos, desactivar y tambien agregar nuevos premios, recuerde seguir la estructura debida.</p>
+                <p><strong>DIRECTORY</strong>, ruta donde se encuentra la imagen.</p>
+                <ul>
+                    <li><strong>Status (boolean)</strong>, activar o desactivar el premio</li>
+                    <li><strong>Type (string)</strong>, tipos de premio, “continuous”, “requerid” y “accumulate”, todo en minuscula.
+                        <ul>
+                            <li><strong>Continuous(c)</strong>, El usuario obtendra el premio de manera continua.</li>
+                            <li><strong>Requerid(r)</strong>, El usuario obtendra el premio solo cuando aya llegado a ese voto requerido.</li>
+                            <li><strong>Accumulate(a)</strong>, El usuario obtendra el premio al acumular el voto exacto aparte del voto total ya acumulado.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Quantity (int, array(int), array(array))</strong>, cantidad de items por voto, en caso de ser un valor numerico, será una cantidad estatica, en caso de ser un array, ejemplo [2, 5] se sincronizará con el voteRequerid que veremos a continuación. Si usted desea darle mas dinamismo como algo random usted debera seguir esta estructura.
+                        <pre><code>
+                            'quantity'      =>      [
+                                array('min' => 0, 'max' => 2),
+                                array('min' => 2, 'max' => 5),
+                                array('min' => 3, 'max' => 6),
+                                array('min' => 1, 'max' => 7)
+                            ]
+                        </code></pre>
+                        o tambien
+                        <pre><code>
+                            'quantity'      =>      [
+                                3,
+                                array('min' => 1, 'max' => 1),
+                                5
+                            ]
+                        </code></pre>
+                    </li>
+                    <li><strong>Item(array)</strong>, datos necesarios del item.
+                        <ul>
+                            <li><strong>Id (int)</strong>, identificador del item del juego.</li>
+                            <li><strong>Name(string)</strong>, nombre el item.</li>
+                            <li><strong>Img(string)</strong>, nombre de la imagen del item, no olvide la extensión.</li>
+                        </ul>
+                        Usted puede agregar mas propiedades.
+                    </li>                    
+                </ul>
+                <p>Usted puede agregar mas items siempre y cuando cumpla con los standares que se le ha informado. Una vez echo esto debe agregar en el retorno de la function get.</p>
+                <p>El sistema automáticamente estará extrayendo a su base de datos los id account, id characters y ip cuando el usuario haya logrado hacer el voto. No se preocupe usted. Luego del voto se insertará el item en la tabla del juego, inventoryitems.</p>
+                <h3>Form Install</h3>
+                <p>Usted puede acudir al ejemplo en el archivo template.php</p>
+                <ul>
+                    <li><strong>Function Ranking (return array)</strong>, se obtiene una tabla de posiciones de usuario y otra la position del usuario logeado.
+                        <ul>
+                            <li><strong>[user]</strong>, Position Top User</li>
+                            <li><strong>[table]</strong>, Table Ranking</li>
+                        </ul>
+                    </li>
+                    <li><strong>function getFormVote</strong>, para obtener el formulario del voto</li>
+                    <li><strong>function getFormConfig</strong>, obtiene el formulario de configuración, <u>este solo aparecará cuando exista una sesión</u></li>
+                    <li><strong>info[formVote]</strong>, informe del formulario Vote</li>
+                    <li><strong>info[formConfig]</strong>, informe del formulario Config</li>
+                    <li><strong>script.js</strong>, ayudará en el redirecionamiento de la pagina luego del voto y tambien el formulario</li>
+                </ul>
+            </article>            
+        </section>
+        <footer>
+            <div class="buttons">
+                <a href="" class="btn_github">GITHUB</a>
+                <a href="" class="btn_twitter">TWITTER</a>
+            </div>
+            <p>Design by Churano. <em>churanoms@gmail.com</em></p>
+        </footer>
+    </div>
+</body>
+</html>
