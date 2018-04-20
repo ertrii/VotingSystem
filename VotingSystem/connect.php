@@ -10,7 +10,7 @@ class DataBase{
     protected $db_info = '';
    
 
-    protected function connectMaple($query){
+    protected function mysqliMaple($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_MAPLE);
 
 		if ($dB->connect_errno) {
@@ -25,7 +25,7 @@ class DataBase{
     }
 
     protected function consultIdUser($user){
-        $consult = $this -> connectMaple("SELECT id FROM accounts WHERE name = '$user'");
+        $consult = $this -> mysqliMaple("SELECT id FROM accounts WHERE name = '$user'");
         $id = $consult-> fetch_array();
         return ($consult) ? $id['id'] : false;
     }
@@ -33,7 +33,7 @@ class DataBase{
     protected function getCharsUser($_id = null){
         $id = ($_id === null) ? $_SESSION[SESSION_VARIABLE] : $_id;
         
-        $get = $this -> connectMaple("SELECT id, name, level FROM characters WHERE accountid = '$id'");
+        $get = $this -> mysqliMaple("SELECT id, name, level FROM characters WHERE accountid = '$id'");
         $chars = $get-> fetch_all();
         
         if($get){
@@ -44,12 +44,12 @@ class DataBase{
     }
 
     protected function getNameChar($id){
-        $name = $this->connectMaple("SELECT name FROM characters WHERE id = $id");
+        $name = $this->mysqliMaple("SELECT name FROM characters WHERE id = $id");
         return $name -> fetch_array()['name'];
     }
 
     protected function getAddress($user){
-        $consult = $this -> connectMaple("SELECT id, ip FROM accounts WHERE name = '$user'");
+        $consult = $this -> mysqliMaple("SELECT id, ip FROM accounts WHERE name = '$user'");
         $address = $consult-> fetch_array();
         if ($address === null) {
             $this->db_info = Message::USER_DONT_EXIST;
@@ -76,7 +76,7 @@ class DataBase{
     //          === Database Vote ===
     private $conDB;
 
-    public function connect($query){
+    public function mysqliSystem($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_VOTE);
 
 		if ($dB->connect_errno) {
@@ -96,7 +96,7 @@ class DataBase{
     }
     //=== Table Vote ===    
     protected function select($id, $row){
-        $select = $this -> connect("SELECT $row FROM voted WHERE id_user = '$id' ");
+        $select = $this -> mysqliSystem("SELECT $row FROM voted WHERE id_user = '$id' ");
         $_v = $select->fetch_array();
         return $_v[$row];
     }
@@ -115,12 +115,12 @@ class DataBase{
                 break;
             }
         }
-        $update = $this-> connect("UPDATE voted SET default_id_character = '$id_char', last_vote = last_vote WHERE id_user = '$id' " );
+        $update = $this-> mysqliSystem("UPDATE voted SET default_id_character = '$id_char', last_vote = last_vote WHERE id_user = '$id' " );
         return ($update) ? true : false;
     }
 
     protected function registerUserInVoteDB($id, $char){
-        $this -> connect("INSERT INTO voted(id_user, default_id_character, last_vote) VALUES ($id, '$char', '2013-05-19 00:00:00')");
+        $this -> mysqliSystem("INSERT INTO voted(id_user, default_id_character, last_vote) VALUES ($id, '$char', '2013-05-19 00:00:00')");
     }
 
 
@@ -133,7 +133,7 @@ class DataBase{
 
         $chars = $this -> getCharsUser($id);
         //Verificar si existe el usuario en la table voted de Vote Database sino agregarlo consiguiendo los datos de la tabla de maple        
-        $userExistsInVoteDB = $this -> connect("SELECT IF (EXISTS (SELECT id_user FROM voted WHERE id_user = $id), 1, 0)");
+        $userExistsInVoteDB = $this -> mysqliSystem("SELECT IF (EXISTS (SELECT id_user FROM voted WHERE id_user = $id), 1, 0)");
 
         if (!$userExistsInVoteDB -> fetch_array()[0]){
             
@@ -161,13 +161,13 @@ class DataBase{
         }
 
         if($ip && IPCONTROL){            
-            $this -> connect("UPDATE ipcontrol SET votes = votes + 1 WHERE ip = '$ip'");
+            $this -> mysqliSystem("UPDATE ipcontrol SET votes = votes + 1 WHERE ip = '$ip'");
         } 
         
         if(ADDITIONAL_VOTE){
-            $update = $this -> connect("UPDATE voted SET votes = votes + 1, vote_additional = vote_additional + 1 WHERE id_user = $id");
+            $update = $this -> mysqliSystem("UPDATE voted SET votes = votes + 1, vote_additional = vote_additional + 1 WHERE id_user = $id");
         }else{
-            $update = $this -> connect("UPDATE voted SET votes = votes + 1 WHERE id_user = $id");
+            $update = $this -> mysqliSystem("UPDATE voted SET votes = votes + 1 WHERE id_user = $id");
         }
         
         return ($update) ? $this -> select($id, 'votes') : false;
@@ -175,18 +175,18 @@ class DataBase{
 
 
     protected function ipReport($ip){
-        $ipRegistered = $this -> connect("SELECT IF (EXISTS (SELECT id FROM ipcontrol WHERE ip = '$ip'), 1, 0)");
+        $ipRegistered = $this -> mysqliSystem("SELECT IF (EXISTS (SELECT id FROM ipcontrol WHERE ip = '$ip'), 1, 0)");
 
-        if(!$ipRegistered->fetch_array()[0]) $this -> connect("INSERT INTO ipcontrol(ip) VALUES ('$ip')");
+        if(!$ipRegistered->fetch_array()[0]) $this -> mysqliSystem("INSERT INTO ipcontrol(ip) VALUES ('$ip')");
 
-        $consult = $this->connect("SELECT last_vote, registration_date, banned FROM ipcontrol WHERE ip = '$ip'");
+        $consult = $this->mysqliSystem("SELECT last_vote, registration_date, banned FROM ipcontrol WHERE ip = '$ip'");
 
         return $consult->fetch_array();
     }
 
     protected function banIP($ip, $status = true){
         $_status = ($status) ? 1 : 0;
-        return ($this-> connect("UPDATE ipcontrol SET banned = $_status WHERE ip = $ip")) ? true : false;
+        return ($this-> mysqliSystem("UPDATE ipcontrol SET banned = $_status WHERE ip = $ip")) ? true : false;
     }
     /*
     ====================================================
@@ -203,7 +203,7 @@ class DataBase{
             $countItem++;
             $idItem = $item['item']['id'];
             $countItem = $item['quantity'];
-            $this-> connectMaple("INSERT INTO inventoryitems(characterid, accountid, itemid, quantity) VALUES($idChar, $idUser, $idItem, $countItem)");
+            $this-> mysqliMaple("INSERT INTO inventoryitems(characterid, accountid, itemid, quantity) VALUES($idChar, $idUser, $idItem, $countItem)");
         }
         return ($countItem > 0) ? true : false;
     }
@@ -214,12 +214,12 @@ class DataBase{
     ==================================================
     */
     public function ranking(){
-        $rank = $this -> connect("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC, start_date ASC LIMIT " . RANK_TABLE_ROWS);
+        $rank = $this -> mysqliSystem("SELECT id_user, start_date, votes, vote_additional, @cRank := @cRank + 1 AS rank FROM voted v, (SELECT @cRank := 0) r ORDER BY votes DESC, start_date ASC LIMIT " . RANK_TABLE_ROWS);
         $_rank = $rank -> fetch_all();
 
         for ($i=0; $i < count($_rank); $i++) { 
             $_id = $_rank[$i][0];
-            $user = $this -> connectMaple("SELECT name FROM accounts WHERE id = $_id");
+            $user = $this -> mysqliMaple("SELECT name FROM accounts WHERE id = $_id");
             $_rank[$i][] = $user -> fetch_array()['name'];//adding
         }
         $user_position = 0;
@@ -251,7 +251,7 @@ class DataBase{
 
         if(isset($_SESSION[SESSION_VARIABLE])) {
             $id_user = $_SESSION[SESSION_VARIABLE];
-            $rankUser = $this -> connect("SELECT 1 + (SELECT COUNT(*) FROM voted a WHERE a.votes > b.votes) AS rank FROM voted b WHERE id_user = $id_user ORDER BY rank, start_date LIMIT 1");
+            $rankUser = $this -> mysqliSystem("SELECT 1 + (SELECT COUNT(*) FROM voted a WHERE a.votes > b.votes) AS rank FROM voted b WHERE id_user = $id_user ORDER BY rank, start_date LIMIT 1");
             $_rankUser = $rankUser -> fetch_array();
 
             $user_position = ($_rankUser[0] == null) ? 0 : $_rankUser[0] ;

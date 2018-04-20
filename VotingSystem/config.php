@@ -57,7 +57,7 @@ class Message{
 
 class Items{
     
-    public const DIRECTORY = 'img/';//line 87 vote.php
+    public const DIRECTORY = 'VotingSystem/img/';//line 87 vote.php
 
     private const PRIZE_1  = array(
         'status'        =>      true,

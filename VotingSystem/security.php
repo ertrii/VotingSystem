@@ -47,9 +47,9 @@ class Security{
 
         if(isset($_SESSION[SESSION_VARIABLE])){
             $id_user = $_SESSION[SESSION_VARIABLE];
-            $conexionDB -> connect("INSERT INTO filters(ip, id_account, input) VALUES ('$ip', '$id_user', '/* $string */')");
+            $conexionDB -> mysqliSystem("INSERT INTO filters(ip, id_account, input) VALUES ('$ip', '$id_user', '/* $string */')");
         }else{
-            $conexionDB -> connect("INSERT INTO filters(ip, input) VALUES ('$ip', '/* $string */')");
+            $conexionDB -> mysqliSystem("INSERT INTO filters(ip, input) VALUES ('$ip', '/* $string */')");
         }
         self::$info = Message::SECURITY_WARNING;
         $conexionDB->close_DB();

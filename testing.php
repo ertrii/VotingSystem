@@ -1,5 +1,5 @@
 <?php
-include_once "vote.php";
+include_once "VotingSystem/vote.php";
 
 $v = new Vote();
 $rank = $v -> ranking();
