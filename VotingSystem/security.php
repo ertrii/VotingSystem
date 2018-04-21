@@ -65,7 +65,7 @@ class Security{
         
         $text_special = htmlspecialchars($text);            
 
-        if(strlen($text_special) > MAX_INPUT_CHARS){
+        if(strlen($text_special) > MAX_CHARS_INPUT ){
             self::register_code_injection($text);
             return false;
         }

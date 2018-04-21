@@ -38,6 +38,6 @@ $rank = $vote -> ranking();
 
 
 <!-- script -->
-<script src="script.js"></script>
+<script src="VotingSystem/script.js"></script>
 </body>
 </html>

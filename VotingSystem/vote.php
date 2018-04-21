@@ -3,7 +3,7 @@
 //Voting System
 include_once('connect.php');
 include_once("security.php");
-include_once('rewards.php');
+include_once('reward.php');
 class Vote extends DataBase
 {
     private $chars = null;
@@ -28,7 +28,7 @@ class Vote extends DataBase
     }
 
     private function canIvote($user){
-        $address = parent::getAddress($user);        
+        $address = parent::getAddress($user);
         if(!$address){
             $this->prepareInfo($this->db_info);
             return false;
@@ -43,7 +43,7 @@ class Vote extends DataBase
             $ipInfo = parent::ipReport($_ip);
 
             if($ipInfo['banned'] == 1){
-                $this -> prepareInfo("IP $_ip is banned...");
+                $this -> prepareInfo("<p class='v-warning'>This IP $_ip is banned...</p>");
                 return false;
             }
 
@@ -52,7 +52,7 @@ class Vote extends DataBase
             if($_current_date <= $_nextDateForVoteByIP) {                
                 $_intervalByIP = $_current_date->diff($_nextDateForVoteByIP);
                 $_remaining_time = (TIMEFORTHENEXTVOTE > 24) ? $_intervalByIP->format("%Y-%M-%D %H:%I:%S") : $_intervalByIP->format("%H:%I:%S");
-                $this->prepareInfo(Message::CANTVOTE_BYIP . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');
+                $this->prepareInfo(Message::CANTVOTE_BYIP . '<p class="v-warning">Remaining time: ' . $_remaining_time . '</p>');
                 return false;
             }
 
@@ -68,7 +68,7 @@ class Vote extends DataBase
             return ['ip' => $_ip, 'ip_control' => ($address['ip_control'] == 1) ? true : false];     //true
             
         }else{
-            $this->prepareInfo(Message::CANTVOTE . '<p class="v-remaining_time">Remaining time: ' . $_remaining_time . '</p>');
+            $this->prepareInfo(Message::CANTVOTE . '<p class="v-warning">Remaining time: ' . $_remaining_time . '</p>');
             return false;
         }
     }
@@ -95,10 +95,10 @@ class Vote extends DataBase
         $r = new Reward($this->vote, $_idUser);
         $_reward = $r->get();
         
-        $div = Message::SUCCESSFUL_VOTE . '<p class="v-total_votes">Total Votes: ' . $this->vote . '</p>';
+        $div = Message::SUCCESSFUL_VOTE . '<p class="v-info">Total Votes: ' . $this->vote . '</p>';
 
         //Link: hidden, Delete if you do not want to be redirected automatically.
-        $div .= '<a id="v-link_vote" href=" ' . VOTE_LINK .'" style="display: none">xD</a>';
+        $div .= '<a id="v-link_vote" href=" ' . TOPSITE_URL .'" style="display: none">xD</a>';
         
         if(count($_reward) === 0){
             $_reward = null;
@@ -112,9 +112,9 @@ class Vote extends DataBase
     }
 
     /** Template HTML <form>  */
-    private function form_Vote(){
-        return '<form method="post" name="form_vote" id="formVote" action="'. htmlspecialchars($_SERVER['PHP_SELF']) . '" maxinputchars= "' . MAX_INPUT_CHARS . '" >
-                    <input type="text" name="user" placeholder="User" id="v-input_vote" maxlength= "'. MAX_INPUT_CHARS .'">
+    private function form_Vote(){//Warning, js evaluates the form...line 62-64 script.js
+        return '<form method="post" name="form_vote" id="formVote" action="'. htmlspecialchars($_SERVER['PHP_SELF']) . '" maxcharsinput= "' . MAX_CHARS_INPUT  . '" >
+                    <input type="text" name="user" placeholder="User" id="v-input_vote" maxlength= "'. MAX_CHARS_INPUT  .'">
                     <input type="submit" value="VOTE" name="vote" id="v-vote_submit">
                 </form>';
     }
@@ -162,7 +162,7 @@ class Vote extends DataBase
     
     //Start Vote
     private function start($user){
-        //$user = strtolower($user);//http://php.net/manual/en/function.strtolower.php , activate if necessary
+        //$user = strtolower($user); //http://php.net/manual/en/function.strtolower.php , activate if necessary
         $_user = Security::filter($user);
         if($_user === false) {
             $this->prepareInfo(Security::$info);
@@ -206,10 +206,15 @@ class Vote extends DataBase
     //Get form templates
     public function getFormVote(){                
         if (VOTING_SYSTEM) {
-            if(isset($_POST['vote'])) $this -> start($_POST['user']);
-            return $this->form_Vote();
+            if(SESSION_REQUERID && empty($_SESSION[SESSION_VARIABLE])){                
+                return Message::SESSION_REQUERID;
+            }else{
+                if(isset($_POST['vote'])) $this -> start($_POST['user']);
+                return $this->form_Vote();
+            }
+            
         }else{
-            return VOTE_INFO;
+            return SYSTEM_OFF;
         }        
     }
 

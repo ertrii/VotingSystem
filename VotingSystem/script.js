@@ -48,11 +48,11 @@ class Validate{
             return;
         }
 
-        let max_input_chars = this.f.attributes.maxinputchars.value
+        let max_chars_input = this.f.attributes.maxcharsinput.value
 
-        if(input_vote.value.length > max_input_chars){
+        if(input_vote.value.length > max_chars_input){
             input_vote.value = '';
-            this.showMessage('max character: ' + max_input_chars);
+            this.showMessage('max character: ' + max_chars_input);
             return;
         }
         
@@ -60,4 +60,5 @@ class Validate{
 }
 
 const validate = new Validate(document.forms.form_vote);
-document.getElementById('v-vote_submit').onclick = e => validate.form(e);
+let btn_submit = document.getElementById('v-vote_submit')
+if(btn_submit !== null) btn_submit.onclick = e => validate.form(e);

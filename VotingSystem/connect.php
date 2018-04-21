@@ -1,14 +1,9 @@
 <?php
-
 //DataBase
-
 include_once('config.php');
-
 class DataBase{
-    
     //=== Database Maple ===
-    protected $db_info = '';
-   
+    protected $db_info = '';   
 
     protected function mysqliMaple($query){
         $dB = new mysqli(HOST, DB_USER, DB_PASS, DB_MAPLE);
@@ -18,10 +13,8 @@ class DataBase{
 			exit();
 		}else{
             //self->$msg = 'conexion establecida...';            
-			return $dB->query($query);
-			
+			return $dB->query($query);			
 		}
-
     }
 
     protected function consultIdUser($user){
@@ -58,12 +51,13 @@ class DataBase{
             $address['last_vote'] = $this->select($address['id'], 'last_vote');
             $address['ip_control'] = $this->select($address['id'], 'ip_control');
 
-            if ($address['last_vote'] === null){
-                $address['last_vote'] = '2013-05-19 00:00:00';
-            }
-            
+            if ($address['last_vote'] === null) $address['last_vote'] = '2013-05-19 00:00:00';
+            if ($address['ip_control'] === null) $address['ip_control'] = 1;
+                        
             foreach ($address as $add) {                
+                
                 if($add === null) {
+                    
                     $this->db_info = Message::PLAY_THE_GAME_FIRST;
                     return false;
                 }
@@ -177,7 +171,7 @@ class DataBase{
     protected function ipReport($ip){
         $ipRegistered = $this -> mysqliSystem("SELECT IF (EXISTS (SELECT id FROM ipcontrol WHERE ip = '$ip'), 1, 0)");
 
-        if(!$ipRegistered->fetch_array()[0]) $this -> mysqliSystem("INSERT INTO ipcontrol(ip) VALUES ('$ip')");
+        if(!$ipRegistered->fetch_array()[0]) $this -> mysqliSystem("INSERT INTO ipcontrol(ip, last_vote) VALUES ('$ip', '2013-05-19 00:00:00')");
 
         $consult = $this->mysqliSystem("SELECT last_vote, registration_date, banned FROM ipcontrol WHERE ip = '$ip'");
 

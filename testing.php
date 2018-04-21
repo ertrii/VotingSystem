@@ -26,6 +26,11 @@ $rank = $v -> ranking();
             min-height: 100vh;
             width: 100%;
         }
+        span{
+            color: #FED42A;
+            background-color: #403E3E;
+            padding: 2px 5px;
+        }
         nav{
             width: 100%;            
             background-color: #fff;
@@ -154,17 +159,18 @@ $rank = $v -> ranking();
             color: #FED42A;
             font-size: 12pt;
         }
-        .v-warning{
+        .v-danger{
             color: red;
         }
         .v-alert{
             padding-top: 5px;
             font-size: 9pt;
         }
-
-        .v-total_votes{
+        .v-warning{
             font-size: 9pt;
+            color: #F5532C;
         }
+
         .v-sub_title_items{
             padding-top: 5px;            
         }
@@ -175,11 +181,7 @@ $rank = $v -> ranking();
         .v-default_char{
             padding-top: 1.5em;
             font-size: 10pt;
-        }        
-        .v-remaining_time{
-            font-size: 9pt;
-            color: #F5532C;
-        }
+        }                
         select{
             width: 100%;            
             background-color: #f1f1f1;
@@ -213,10 +215,10 @@ $rank = $v -> ranking();
     <div class="container">
     <nav>
         <div class="navbar">
-            <div class="logo"><a href="#">VOTING SYSTEM</a></div>
+            <div class="logo"><a href="index.html">VOTING SYSTEM</a></div>
             <div class="list">
                 <ul>
-                   <li><a href="">GITHUB</a></li>
+                   <li><a href="https://github.com/ertrii" target="_blank">GITHUB</a></li>
                    <li><a href="https://twitter.com/ertrii" target= "_blank">TWITTER</a></li>
                 </ul>
             </div>
@@ -226,16 +228,22 @@ $rank = $v -> ranking();
     <main>
         <div class="col1">
             <h1>Welcome</h1>            
-            <p>This site is to test the voting system and verify that everything is fine.</p>
+            <p>This site is to test the voting system and verify that everything is fine. Edit the config.php file to configure...</p>
             <h2>Default Settings:</h2>
             <ul>
-                <li>Voting System: on</li>
-                <li>TimeZone: América/Lima</li>
-                <li>Time for the next vote: 1 hour</li>
-                <li>Ip Control: on</li>
-                <li>Min Level Requerid: 15</li>
-                <li>Additional Vote: on</li>
-                <li>Limit Ranking: 5</li>                
+                <li>Voting System: <span><?=(VOTING_SYSTEM) ? 'on' : 'off'?></span></li>
+                <li>Session Requerid: <span><?=(SESSION_REQUERID) ? 'enabled' : 'disabled'?></span></li>
+                <li>There Session?: <span><?=(isset($_SESSION[SESSION_VARIABLE])) ? 'yes' : 'no' ?></span></li>
+                <li>Directory Item Image: <span><?=Items::DIRECTORY?></span></li>
+                <li>TimeZone: <span><?=TIMEZONE?></span></li>
+                <li>Time for the next vote: <span><?=(TIMEFORTHENEXTVOTE < 1)? 'disabled' : TIMEFORTHENEXTVOTE . ' hour(s)'?></span></li>
+                <li>Ip Control: <span><?=(IPCONTROL)? 'enabled' : 'disabled'?></span></li>
+                <li>Min Level Requerid: <span><?=MIN_LV_REQUERID?></span></li>
+                <li>Additional Vote: <span><?=(ADDITIONAL_VOTE) ? 'enabled' : 'disabled'?></span></li>
+                <li>Maximun Character Input: <span><?=MAX_CHARS_INPUT?></span></li>
+                <li>Ranking Table Rows: <span><?=RANK_TABLE_ROWS?></span></li>
+                <li>Ranking Table Column Vote Additional Start Date: <span><?=(RANK_TABLE_COL_START_DATE)? 'enabled' : 'disabled'?></span></li>
+                <li>Ranking Table Column Vote Additional: <span><?=(RANK_TABLE_COL_VOTE_ADDITIONAL)? 'enabled' : 'disabled'?></span></li>                
             </ul>
         </div>
         <div class="col2">
@@ -246,8 +254,7 @@ $rank = $v -> ranking();
             <!--  if there is a session, print form_Config  -->    
             <?= $v -> getFormConfig()?>
             <?= $v -> info['formConfig']?>
-            </div>
-            
+            </div>            
         </div>
 
         <div class="col3">
@@ -255,12 +262,8 @@ $rank = $v -> ranking();
             <?=$rank['table']?>
         </div>
     </main>
-        
-    <footer>
-        <p>Voting System by Churano</p>
-    </footer>
-    </div>
-    
-    <script src="script.js"></script>    
+    <footer><p>Voting System by ertrii(Churano)</p></footer>
+    </div>    
+    <script src="VotingSystem/script.js"></script>
 </body>
 </html>
