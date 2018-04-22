@@ -1,6 +1,6 @@
 Voting System
 ==============
-#####Date: 29/Mar/2018
+##### Date: 29/Mar/2018
 #### Version: 1.0.0
 
 Designed to improve the user experience (player) of any MapleStory server and eliminate the abusive votes and typical votes in exchange for nx (cash).
@@ -24,4 +24,4 @@ Requirements
 - Database MapleStory versión 0.62+
 
 
-#####============= Tree ===============
+##### ============== Tree ===============
