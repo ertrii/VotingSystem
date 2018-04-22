@@ -8,12 +8,9 @@ class Vote extends DataBase
 {
     private $chars = null;
     //info about vote
-    public $info = array(
-        'formVote' => '',
-        'formConfig' => '');
+    public $info = array('formVote' => '', 'formConfig' => '');
 
-    function __construct(){        
-        
+    function __construct(){                
         if (isset($_SESSION[SESSION_VARIABLE])){
             $_chars =  parent::getCharsUser();
             if (!$_chars){
@@ -24,7 +21,6 @@ class Vote extends DataBase
                 $this -> chars[] = $char;
             }
         }
-        
     }
 
     private function canIvote($user){

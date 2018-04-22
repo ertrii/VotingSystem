@@ -141,7 +141,7 @@
         </header>
         <section class="introduction">
             <article>
-                <h2>Introdución.</h2>
+                <h2>Introducción.</h2>
                 <p>Gracias por su interéz. Estoy seguro que le será de mucha ayuda.</p>
                 <p>Muchas veces se ha visto la existencia de dos o mas usuarios en un solo hogar y el problema que se generalizaba para realizar dichos votos debido al registro de ip por la necesidad de nx. Quise eliminar este tipo de sistema.</p>
                 <p>El objetivo de esto es que los usuarios obtengan nx por otros medios y que se vuelva un reto. Esto se desarrollo con la idea de que obtengan nx(card etc) por ciertos mobs para aumentar la actividad en mapas que ocupan ellos como sleepywood (hablo en caso de versiones antiguas) y evitar los votos abusivos.</p>
@@ -166,7 +166,7 @@
                     <li>Para las sesiones, el sistema necesitará tomar la id del usuario de la base de datos del juego</li>
                     <li>Los Items se agregaran al primer character de su cuenta. En caso de que no exista le pedirá que se cree uno. Si desea que los items ganados vaya al otro character de su cuenta tendrá que iniciar sessión para activar las configuraciones de vote.</li>
                     <li>El sistema está empleado para registrar los datos necesarios del usuario en su base de datos cuando hay echo su primer voto.</li>
-                    <li>No es sensible a mayúsculas y minúsculas pero si deseas que toda entrada sea minúscula puedes descomentar <span>line 165</span> vote.php, esto solo afectara al primer formulario(formVote).</li>
+                    <li>No es sensible a mayúsculas y minúsculas pero si deseas que toda entrada sea minúscula puedes descomentar <span>line 161</span> vote.php, esto solo afectara al primer formulario(formVote).</li>
                 </ul>
                 <h3>Installation</h3>
                 <p>Import vote.sql in your database.</p>
@@ -206,7 +206,7 @@
                     <li><strong>RANK_TABLE_ROWS(int)</strong>, columnas del ranking.</li>
                     <li><strong>RANK_TABLE_COL_START_DATE (boolean)</strong>, mostrar campo start_date</li>
                     <li><strong>RANK_TABLE_COL_VOTE_ADDITIONAL (boolean)</strong>, mostrar campo vote_additional</li>
-                    <li><strong>Message</strong>, Atención con <strong>Vote_Notice</strong>, existe una etiqueta span con una id, “v-count_time”, este es tomado por un script para realizar dicho conteo para luego redireccionar, si usted no lo desea puede eliminar, <span>line 101</span> vote.php.</li>
+                    <li><strong>Message</strong>, Atención con <strong>Vote_Notice</strong>, existe una etiqueta span con una id, “v-count_time”, este es tomado por un script para realizar dicho conteo para luego redireccionar, si usted no lo desea puede eliminar, <span>line 97</span> vote.php.</li>
                 </ul>
                 <h3>Item</h3>
                 <p>Los Items se les conoce como premios(PRIZE), usted puede editarlos o eliminarlos, desactivar y tambien agregar nuevos premios, recuerde seguir la estructura debida.</p>                

@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();// <--- remember this
 
 //Voting System by ertrii
 
@@ -41,11 +41,11 @@ const MAX_CHARS_INPUT                    =          12;
 
 class Message{
     public const SESSION_REQUERID = '<p class="v-info">You must be logged in to vote.</p>';
-    public const SUCCESSFUL_VOTE = '<p class="v-success">Thank you for the Vote.</p>'; //line 98, vote.php
+    public const SUCCESSFUL_VOTE = '<p class="v-success">Thank you for the Vote.</p>'; //line 94, vote.php
     public const DONTWINITEMS = '<p class="v-info">Sorry you did not win, try it on the next vote f7.</p>';
     public const CANTVOTE = '<p class="v-info">You can not vote until you complete '. TIMEFORTHENEXTVOTE .' hours.</p>';
     public const CANTVOTE_BYIP = '<p class="v-info">You can not vote here until you complete '. TIMEFORTHENEXTVOTE .' hours.</p>';
-    public const VOTE_NOTICE = '<p class="v-alert">You will be directed to gtop100 in <span id="v-count_time">5</span> seconds...</p>';//line 111 and check line 101, vote.php
+    public const VOTE_NOTICE = '<p class="v-alert">You will be directed to gtop100 in <span id="v-count_time">5</span> seconds...</p>';//line 107 and check line 97, vote.php
     public const INPUT_TEXT_NULL = '<p class="v-info">Please, write your username<p>';//line 61 security.php, check line 47 and 55 script.js
     public const SELECT_CHAR = '<p class="v-info">Please, select your character<p>';
     public const USER_DONT_EXIST = '<p class="v-alert">This is user is not exists<p>';
@@ -54,7 +54,7 @@ class Message{
     public const DONT_HAVE_CHAR = '<p class="v-info">You dont have a character in the game, please create one</p>';
     public const DEFAULT_CHAR_DONE = '<p class="v-info">Done...</p>';
     public const SECURITY_WARNING = '<p class="v-danger">We found a strange behavior</p>';
-    //other line 252 connect.php,  line 46, 55, 71, 84, 141 vote.php
+    //other line 252 connect.php,  line 42, 51, 67, 80, 137 vote.php
 }
 
 class Items{
