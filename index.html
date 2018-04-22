@@ -168,6 +168,23 @@
                     <li>El sistema está empleado para registrar los datos necesarios del usuario en su base de datos cuando hay echo su primer voto.</li>
                     <li>No es sensible a mayúsculas y minúsculas pero si deseas que toda entrada sea minúscula puedes descomentar <span>line 165</span> vote.php, esto solo afectara al primer formulario(formVote).</li>
                 </ul>
+                <h3>Installation</h3>
+                <p>Import vote.sql in your database.</p>
+                <p>Now you can go to the example in the <span>template.php</span> file.</p>
+                <ul>
+                    <li><strong>Function Ranking (return array)</strong>, se obtiene una tabla de posiciones de usuario y otra la position del usuario logeado.
+                        <ul>
+                            <li><strong>[user]</strong>, Position Top User</li>
+                            <li><strong>[table]</strong>, Table Ranking</li>
+                        </ul>
+                    </li>
+                    <li><strong>function getFormVote</strong>, para obtener el formulario del voto</li>
+                    <li><strong>function getFormConfig</strong>, obtiene el formulario de configuración, <u>este solo aparecará cuando exista una sesión</u></li>
+                    <li><strong>info[formVote]</strong>, informe del formulario Vote</li>
+                    <li><strong>info[formConfig]</strong>, informe del formulario Config</li>
+                    <li><strong>script.js</strong>, ayudará en el redirecionamiento de la pagina luego del voto y tambien el formulario</li>
+                </ul>
+                <p>Recuerde que usted puede hacer sus pruebas de manera mas amigable en la sección <span>Testing</span></p>
                 <h3>Configuration</h3>
                 <p>En el archivo config.php existen muchas opciones (const):</p>
                 <ul>
@@ -233,24 +250,9 @@
                     <li><strong>voteRequerid (array)</strong>, valores numerico que se requiere para los votos, sus comportamientos será diferente dependiendo por el Type escrito.</li>
                 </ul>
                 <p>Usted puede agregar mas items siempre y cuando cumpla con los standares que se le ha informado. Una vez echo esto debe agregar en el retorno de la function get.</p>
-                <p>El sistema automáticamente estará extrayendo a su base de datos los id account, id characters y ip cuando el usuario haya logrado hacer el voto. No se preocupe usted. Luego del voto se insertará el item en la tabla del juego, inventoryitems.</p>
-                <h3>Installation</h3>
-                <p>You can go to the example in the <span>template.php</span> file.</p>
-                <ul>
-                    <li><strong>Function Ranking (return array)</strong>, se obtiene una tabla de posiciones de usuario y otra la position del usuario logeado.
-                        <ul>
-                            <li><strong>[user]</strong>, Position Top User</li>
-                            <li><strong>[table]</strong>, Table Ranking</li>
-                        </ul>
-                    </li>
-                    <li><strong>function getFormVote</strong>, para obtener el formulario del voto</li>
-                    <li><strong>function getFormConfig</strong>, obtiene el formulario de configuración, <u>este solo aparecará cuando exista una sesión</u></li>
-                    <li><strong>info[formVote]</strong>, informe del formulario Vote</li>
-                    <li><strong>info[formConfig]</strong>, informe del formulario Config</li>
-                    <li><strong>script.js</strong>, ayudará en el redirecionamiento de la pagina luego del voto y tambien el formulario</li>
-                </ul>
+                <p>El sistema automáticamente estará extrayendo a su base de datos los id account, id characters y ip cuando el usuario haya logrado hacer el voto. No se preocupe usted. Luego del voto se insertará el item en la tabla del juego, inventoryitems.</p>                
                 <h3>Security</h3>
-                <p>Tambien pense en esto. Cualquier intento <strong>forzado</strong> de inyección como, mysql query, caracteres especiales hasta una simple comilla será retenida. Todo intento será registrado en la base de datos en la tabla filter; ip, fecha y el dato escrito, en caso de existir una sesión tambien se le registrará. Al intento de ingreso de un character por defecto no existente mostrará un mensaje de error <span>e1000</span></p>
+                <p>Tambien pense en esto. Cualquier intento <strong>forzado</strong> de inyección como, mysql query, caracteres especiales hasta una simple comilla será retenida. Todo intento será registrado en la base de datos en la tabla filter; ip, fecha y el dato escrito, en caso de existir una sesión tambien se le registrará. Al intento de inserción de un character por defecto no existente mostrará un mensaje de error <span>e1000</span></p>
                 <p>Al votar con un character por defecto no existente el sistema no dará error simplemente mostrará un aviso.</p>
             </article>
         </section>
@@ -259,7 +261,7 @@
                 <a href="https://github.com/ertrii" class="btn_github">GITHUB</a>
                 <a href="https://twitter.com/ertrii" class="btn_twitter">TWITTER</a>
             </div>
-            <p>Design by Churano/ertrii. <em>ertriilive@gmail.com</em></p>
+            <p>Design by ertrii. <em>ertriilive@gmail.com</em></p>
         </footer>
     </div>
 </body>
