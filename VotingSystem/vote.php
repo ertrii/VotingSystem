@@ -223,6 +223,6 @@ class Vote extends DataBase
             return $this->formConfig();
         } else{
             return null;
-        }        
+        }
     }
 }
