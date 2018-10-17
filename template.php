@@ -34,6 +34,19 @@ $rank = $vote -> ranking();
 
     //Table Ranking
     echo $rank['table'];
+    //$hola = ( [0] => Array ( [id_forocategoria] => 26 [categoria] => ) );
+    $arr = array(
+        array(
+            "id_forocategoria" => 26,
+            "categoria" => "other"
+        )
+    );
+    //print_r($arr);
+    foreach($arr as $a){
+        $arr2 = $arr;
+    }
+
+    print_r($arr2);
 ?>
 
 
